@@ -227,13 +227,13 @@ class GoogleMapsScraper:
             for business_type in business_types:
                 logger.info("Searching for %s businesses...", business_type)
             
-            # Check cache first
-            if use_cache:
-                cached = self.load_cached_businesses(place_id, business_type)
-                if cached is not None:
-                    logger.info(f"Loaded {len(cached)} {business_type} businesses from cache")
-                    all_results.extend(cached)
-                    continue
+                # Check cache first
+                if use_cache:
+                    cached = self.load_cached_businesses(place_id, business_type)
+                    if cached is not None:
+                        logger.info(f"Loaded {len(cached)} {business_type} businesses from cache")
+                        all_results.extend(cached)
+                        continue
             
             # Track nearby search request
             self.request_count['nearby_search'] += 1
