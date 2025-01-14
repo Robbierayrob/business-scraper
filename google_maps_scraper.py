@@ -105,13 +105,27 @@ class GoogleMapsScraper:
         formatted_hours = []
         
         for period in periods:
-            open_time = datetime.strptime(
-                period['open']['time'], '%H%M'
-            ).strftime('%I:%M %p')
-            close_time = datetime.strptime(
-                period['close']['time'], '%H%M'
-            ).strftime('%I:%M %p')
-            formatted_hours.append(f"{open_time} - {close_time}")
+            try:
+                # Handle open time
+                open_time = datetime.strptime(
+                    period['open']['time'], '%H%M'
+                ).strftime('%I:%M %p')
+                
+                # Handle close time if available
+                if 'close' in period:
+                    close_time = datetime.strptime(
+                        period['close']['time'], '%H%M'
+                    ).strftime('%I:%M %p')
+                    formatted_hours.append(f"{open_time} - {close_time}")
+                else:
+                    formatted_hours.append(f"Opens at {open_time}")
+                    
+            except (KeyError, ValueError):
+                # Skip malformed periods
+                continue
+                
+        if not formatted_hours:
+            return 'Not Available'
             
         return '\n'.join(formatted_hours)
 
