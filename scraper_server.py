@@ -59,11 +59,14 @@ async def search_businesses(place_id: str, radius: int = 2500, business_types: l
 @app.get("/businesses")
 async def get_businesses():
     try:
+        print(f"Attempting to load businesses.json from: {os.path.abspath('businesses.json')}")
         with open('businesses.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
+            print(f"Successfully loaded {len(data)} businesses")
             
         # Ensure data is in the correct format
         if not isinstance(data, list):
+            print("Data was not a list, converting to list")
             data = [data]
             
         return {
@@ -72,15 +75,26 @@ async def get_businesses():
             "data": data
         }
     except FileNotFoundError:
+        print("Error: businesses.json file not found")
         return {
-            "status": "success",
+            "status": "error",
+            "message": "businesses.json file not found",
             "count": 0,
             "data": []
         }
     except json.JSONDecodeError as e:
+        print(f"JSON decode error: {str(e)}")
         return {
             "status": "error",
             "message": f"Invalid JSON format: {str(e)}",
+            "count": 0,
+            "data": []
+        }
+    except Exception as e:
+        print(f"Unexpected error loading businesses: {str(e)}")
+        return {
+            "status": "error",
+            "message": f"Unexpected error: {str(e)}",
             "count": 0,
             "data": []
         }

@@ -27,8 +27,22 @@ class Dashboard {
 
     async loadBusinesses() {
         try {
+            this.log("Fetching businesses from server...");
             const response = await fetch('http://localhost:8000/businesses');
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const data = await response.json();
+            this.log(`Server response: ${JSON.stringify(data, null, 2)}`);
+            
+            if (data.status === 'error') {
+                this.log(`Error from server: ${data.message}`, 'error');
+                this.businesses = [];
+                return;
+            }
+
             if (data.data && data.data.length > 0) {
                 this.businesses = data.data;
                 
@@ -47,6 +61,7 @@ class Dashboard {
             }
         } catch (error) {
             this.log(`Error loading businesses: ${error.message}`, 'error');
+            console.error('Error loading businesses:', error);
         }
     }
 
