@@ -59,7 +59,7 @@ async def search_businesses(place_id: str, radius: int = 2500, business_types: l
 @app.get("/businesses")
 async def get_businesses():
     try:
-        with open('businesses.json', 'r') as f:
+        with open('businesses.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
         return {
             "status": "success",
