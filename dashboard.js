@@ -27,8 +27,9 @@ class Dashboard {
 
     async loadBusinesses() {
         try {
-            const response = await fetch('businesses.json');
-            this.businesses = await response.json();
+            const response = await fetch('http://localhost:8000/businesses');
+            const data = await response.json();
+            this.businesses = data.data;
             
             // Add unique IDs if missing
             this.businesses = this.businesses.map((b, i) => {
@@ -41,6 +42,35 @@ class Dashboard {
             this.log(`Loaded ${this.businesses.length} businesses`);
         } catch (error) {
             this.log(`Error loading businesses: ${error.message}`, 'error');
+        }
+    }
+
+    async handleSearch() {
+        const query = document.getElementById('search-input').value;
+        this.log(`Searching for: ${query}`);
+        
+        try {
+            const response = await fetch('http://localhost:8000/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    address: query,
+                    radius: 2500
+                })
+            });
+            
+            const data = await response.json();
+            if (data.status === 'success') {
+                this.businesses = data.data;
+                this.renderBusinesses();
+                this.log(`Found ${data.count} businesses`);
+            } else {
+                throw new Error('Search failed');
+            }
+        } catch (error) {
+            this.log(`Error searching: ${error.message}`, 'error');
         }
     }
 
