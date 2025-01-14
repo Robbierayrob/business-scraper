@@ -174,7 +174,8 @@ class GoogleMapsScraper:
                 processed_results = []
                 for place in type_results:
                     try:
-                        business_data = self.process_business(place)
+                        # Pass the search type we're currently using
+                        business_data = self.process_business(place, business_type)
                         if business_data:
                             processed_results.append(business_data)
                     except Exception as e:
@@ -268,38 +269,44 @@ class GoogleMapsScraper:
             'total_cost': total_cost
         }
 
-    def process_business(self, place):
+    def process_business(self, place, search_type='restaurant'):
         """Process raw business data from Google Maps API"""
         try:
-            # Get place details
-            place_details = self.gmaps.place(
-                place['place_id'],
-                fields=['name', 'formatted_address', 'formatted_phone_number',
-                       'website', 'opening_hours', 'business_status',
-                       'wheelchair_accessible_entrance']
-            )
+            # Get place details only if we don't already have them
+            if 'formatted_address' not in place:
+                place_details = self.gmaps.place(
+                    place['place_id'],
+                    fields=['name', 'formatted_address', 'formatted_phone_number',
+                           'website', 'opening_hours', 'business_status',
+                           'wheelchair_accessible_entrance']
+                )
+                place.update(place_details['result'])
             
             # Extract email if available
-            website = place_details['result'].get('website', '')
+            website = place.get('website', '')
             email = self.extract_email(website) if website else ''
+            
+            # Safely get geometry data
+            lat = place.get('geometry', {}).get('location', {}).get('lat', 0)
+            lng = place.get('geometry', {}).get('location', {}).get('lng', 0)
             
             # Prepare business data
             business_data = {
-                'name': place_details['result'].get('name'),
-                'address': place_details['result'].get('formatted_address'),
-                'phone': place_details['result'].get('formatted_phone_number'),
+                'name': place.get('name'),
+                'address': place.get('formatted_address'),
+                'phone': place.get('formatted_phone_number'),
                 'website': website,
                 'email': email,
                 'opening_hours': self.format_opening_hours(
-                    place_details['result'].get('opening_hours', {})
+                    place.get('opening_hours', {})
                 ),
-                'business_type': self.get_primary_business_type(place.get('types', [])),
-                'accessibility': place_details['result'].get(
+                'business_type': search_type,  # Use the type we searched for
+                'accessibility': place.get(
                     'wheelchair_accessible_entrance', False
                 ),
                 'place_id': place['place_id'],
-                'latitude': place['geometry']['location']['lat'],
-                'longitude': place['geometry']['location']['lng']
+                'latitude': lat,
+                'longitude': lng
             }
             return business_data
         except Exception as e:
