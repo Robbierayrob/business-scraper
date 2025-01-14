@@ -1,6 +1,11 @@
 import googlemaps
 import pandas as pd
 from datetime import datetime
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
 
 class GoogleMapsScraper:
     def __init__(self, api_key):
@@ -74,7 +79,11 @@ class GoogleMapsScraper:
 
 # Example usage:
 if __name__ == "__main__":
-    API_KEY = 'your_google_cloud_api_key'
+    # Get API key from environment variables
+    API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
+    if not API_KEY:
+        raise ValueError("GOOGLE_MAPS_API_KEY not found in .env file")
+        
     scraper = GoogleMapsScraper(API_KEY)
     
     # Search for restaurants in Sydney
