@@ -174,8 +174,9 @@ class GoogleMapsScraper:
                 processed_results = []
                 for place in type_results:
                     try:
-                        # Pass the search type we're currently using
-                        business_data = self.process_business(place, business_type)
+                        # Add the search type to the place data before processing
+                        place['search_type'] = business_type
+                        business_data = self.process_business(place)
                         if business_data:
                             processed_results.append(business_data)
                     except Exception as e:
@@ -269,7 +270,7 @@ class GoogleMapsScraper:
             'total_cost': total_cost
         }
 
-    def process_business(self, place, search_type='restaurant'):
+    def process_business(self, place):
         """Process raw business data from Google Maps API"""
         try:
             # Get place details only if we don't already have them
@@ -290,6 +291,9 @@ class GoogleMapsScraper:
             lat = place.get('geometry', {}).get('location', {}).get('lat', 0)
             lng = place.get('geometry', {}).get('location', {}).get('lng', 0)
             
+            # Get business type - use search_type if available, otherwise fallback to types
+            business_type = place.get('search_type', 'restaurant')
+            
             # Prepare business data
             business_data = {
                 'name': place.get('name'),
@@ -300,7 +304,7 @@ class GoogleMapsScraper:
                 'opening_hours': self.format_opening_hours(
                     place.get('opening_hours', {})
                 ),
-                'business_type': search_type,  # Use the type we searched for
+                'business_type': business_type,
                 'accessibility': place.get(
                     'wheelchair_accessible_entrance', False
                 ),
