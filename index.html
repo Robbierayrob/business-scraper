@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="search-section">
+            <h1>Business Finder</h1>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Enter location...">
+                <button id="search-btn">Search</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="console">
+                <h2>Activity Log</h2>
+                <div id="console-log"></div>
+            </div>
+
+            <div class="business-list">
+                <h2>Businesses</h2>
+                <div class="controls">
+                    <select id="sort-by">
+                        <option value="name">Name</option>
+                        <option value="type">Type</option>
+                        <option value="date">Date Added</option>
+                    </select>
+                    <input type="text" id="filter" placeholder="Filter businesses...">
+                </div>
+                <div id="businesses-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
