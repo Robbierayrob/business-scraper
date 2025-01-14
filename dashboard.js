@@ -180,9 +180,12 @@ class Dashboard {
         
         // Add click handler for business cards
         this.businessContainer.querySelectorAll('.business-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const id = card.dataset.id;
-                this.showBusinessDetails(id);
+            card.addEventListener('click', (e) => {
+                // Prevent double triggering from both onclick and event listener
+                if (e.target.tagName !== 'A') {
+                    const id = card.dataset.id;
+                    this.showBusinessDetails(id);
+                }
             });
         });
     }
