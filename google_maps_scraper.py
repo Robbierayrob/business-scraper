@@ -131,13 +131,22 @@ class GoogleMapsScraper:
         Args:
             place_id: Google Maps place ID
             radius: Search radius in meters
-            business_types: List of business types to search for
+            business_types: List of business types to search for (from BUSINESS_TYPES)
             use_cache: Whether to use cached results if available
                       Set to False to force fresh API search
         """
         logger.info("Searching businesses near place_id: %s", place_id)
         if business_types is None:
             business_types = ['restaurant']  # Default to just restaurants
+            
+        # Validate business types
+        invalid_types = [t for t in business_types if t not in self.BUSINESS_TYPES]
+        if invalid_types:
+            logger.warning("Invalid business types provided: %s", invalid_types)
+            business_types = [t for t in business_types if t in self.BUSINESS_TYPES]
+            if not business_types:
+                logger.error("No valid business types provided")
+                return pd.DataFrame()
             
         # Check if we have fresh cached results (less than 1 day old)
         if use_cache:
@@ -248,7 +257,8 @@ class GoogleMapsScraper:
                     'opening_hours': self.format_opening_hours(
                         place_details['result'].get('opening_hours', {})
                     ),
-                    'business_type': place.get('search_type', 'restaurant'),
+                    'business_type': business_type,
+                    'business_types': business_types,  # Include all types
                     'accessibility': place_details['result'].get(
                         'wheelchair_accessible_entrance', False
                     ),
@@ -313,8 +323,21 @@ class GoogleMapsScraper:
             lat = place.get('geometry', {}).get('location', {}).get('lat', 0)
             lng = place.get('geometry', {}).get('location', {}).get('lng', 0)
             
-            # Get business type - use search_type if available, otherwise fallback to types
-            business_type = place.get('search_type', 'restaurant')
+            # Get business types - combine search types with place types
+            search_types = place.get('search_type', ['restaurant'])
+            if isinstance(search_types, str):
+                search_types = [search_types]
+                
+            # Get all types from the place
+            place_types = place.get('types', [])
+            
+            # Combine and deduplicate types
+            all_types = list(set(search_types + place_types))
+            # Filter to only valid business types
+            business_types = [t for t in all_types if t in self.BUSINESS_TYPES]
+            
+            # Use the most specific type as primary
+            business_type = self.get_primary_business_type(business_types)
             
             # Prepare business data
             business_data = {
@@ -456,16 +479,38 @@ def main():
         logger.warning("No radius selected by user")
         return
         
-    # Search just restaurants
+    # Let user select business types
+    print("\nAvailable business types:")
+    for i, biz_type in enumerate(scraper.BUSINESS_TYPES, 1):
+        print(f"{i}. {biz_type}")
+    
+    print("\nEnter numbers of business types to search (comma separated):")
+    print("Example: 1,2,3 for restaurant, cafe, bar")
+    while True:
+        try:
+            choices = input("Your choices: ").strip()
+            if not choices:
+                business_types = ['restaurant']  # Default
+                break
+                
+            selected_indices = [int(c.strip()) - 1 for c in choices.split(',')]
+            business_types = [scraper.BUSINESS_TYPES[i] for i in selected_indices 
+                            if 0 <= i < len(scraper.BUSINESS_TYPES)]
+            if business_types:
+                break
+            print("Please select at least one valid business type")
+        except (ValueError, IndexError):
+            print("Please enter valid numbers separated by commas")
+
     logger.info("Starting business search with radius: %d meters", radius)
-    print("\nSearching restaurants...")
+    print(f"\nSearching {', '.join(business_types)}...")
     
     results = pd.DataFrame()
     try:
         results = scraper.search_businesses(
             place_id=place_id,
             radius=radius,
-            business_types=['restaurant'],
+            business_types=business_types,
             use_cache=False  # Force fresh search
         )
     except Exception as e:
