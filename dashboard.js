@@ -187,16 +187,6 @@ class Dashboard {
                                     <div class="info-label text-sm font-medium text-gray-500 mb-1">Website</div>
                                     <a href="${b.website}" target="_blank" class="info-value text-blue-600 hover:text-blue-700 break-all">${b.website}</a>
                                 </div>` : ''}
-
-                                ${hours ? `
-                                <div class="info-section">
-                                    <div class="info-label text-sm font-medium text-gray-500 mb-1">Opening Hours</div>
-                                    <div class="info-value text-gray-700 space-y-1">
-                                        ${hours.split('\n').map(hour => `
-                                            <div>${hour}</div>
-                                        `).join('')}
-                                    </div>
-                                </div>` : ''}
                             </div>
                         </div>
                     </div>
