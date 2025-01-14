@@ -1,8 +1,10 @@
 import googlemaps
+import json
 import pandas as pd
 from datetime import datetime
 from dotenv import load_dotenv
 import os
+import questionary
 
 # Load environment variables from .env file
 load_dotenv()
@@ -10,11 +12,40 @@ load_dotenv()
 class GoogleMapsScraper:
     def __init__(self, api_key):
         self.gmaps = googlemaps.Client(key=api_key)
+        self.cached_results = []
         
-    def search_businesses(self, location, radius=5000, business_type=None):
+    def validate_address(self, address):
+        """Use Google's autocomplete to validate and confirm address"""
+        autocomplete = self.gmaps.places_autocomplete(
+            input_text=address,
+            types='geocode'
+        )
+        
+        if not autocomplete:
+            print("No matching addresses found")
+            return None
+            
+        choices = [f"{result['description']}" for result in autocomplete]
+        selected = questionary.select(
+            "Please confirm the correct address:",
+            choices=choices
+        ).ask()
+        
+        if not selected:
+            return None
+            
+        # Get the place details for the selected address
+        place = next((p for p in autocomplete if p['description'] == selected), None)
+        return place['place_id']
+        
+    def search_businesses(self, place_id, radius=2500, business_type=None):
         """Search for businesses in a specific location"""
+        # Get the location coordinates from place_id
+        place_details = self.gmaps.place(place_id, fields=['geometry'])
+        location = place_details['result']['geometry']['location']
+        
         places_result = self.gmaps.places_nearby(
-            location=location,
+            location=f"{location['lat']},{location['lng']}",
             radius=radius,
             type=business_type
         )
@@ -77,8 +108,7 @@ class GoogleMapsScraper:
             
         return '\n'.join(formatted_hours)
 
-# Example usage:
-if __name__ == "__main__":
+def main():
     # Get API key from environment variables
     API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
     if not API_KEY:
@@ -86,9 +116,60 @@ if __name__ == "__main__":
         
     scraper = GoogleMapsScraper(API_KEY)
     
-    # Search for restaurants in Sydney
-    location = "-33.8670522,151.1957362"  # Sydney coordinates
-    results = scraper.search_businesses(location, business_type='restaurant')
+    # Get address from user
+    address = questionary.text("Enter the town/address to search near:").ask()
+    if not address:
+        return
+        
+    # Validate address
+    place_id = scraper.validate_address(address)
+    if not place_id:
+        return
+        
+    # Get search radius
+    radius = questionary.select(
+        "Select search radius:",
+        choices=[
+            ("2.5 km", 2500),
+            ("5 km", 5000),
+            ("10 km", 10000)
+        ]
+    ).ask()
     
-    # Save to CSV
-    results.to_csv('businesses.csv', index=False)
+    if not radius:
+        return
+        
+    # Get business type
+    business_type = questionary.text(
+        "Enter business type (restaurant, cafe, etc) or leave blank:"
+    ).ask()
+    
+    # Perform search
+    results = scraper.search_businesses(
+        place_id=place_id,
+        radius=radius,
+        business_type=business_type
+    )
+    
+    # Save results to memory
+    scraper.cached_results = results.to_dict('records')
+    
+    # Show results count
+    print(f"\nFound {len(scraper.cached_results)} businesses")
+    
+    # Save to JSON
+    with open('businesses.json', 'w') as f:
+        json.dump(scraper.cached_results, f, indent=2)
+    print("Results saved to businesses.json")
+    
+    # Ask about scraping
+    if questionary.confirm("Do you want to scrape these places?").ask():
+        # Add scraping logic here
+        print("Scraping additional details...")
+        # You can access the cached results with place IDs
+        for business in scraper.cached_results:
+            # Add your scraping logic here
+            pass
+            
+if __name__ == "__main__":
+    main()
