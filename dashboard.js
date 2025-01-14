@@ -138,7 +138,6 @@ class Dashboard {
             </div>
         `;
     }
-    }
 
     log(message, type = 'info') {
         const entry = document.createElement('div');
