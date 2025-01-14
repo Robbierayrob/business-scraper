@@ -1,21 +1,31 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     margin: 0;
-    padding: 20px;
-    background-color: #f5f5f5;
+    padding: 0;
+    background-color: #f8fafc;
+    color: #1e293b;
 }
 
 .dashboard {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    min-height: 100vh;
     background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 0 35px rgba(0,0,0,0.03);
+}
+
+.main-content {
+    padding: 2rem;
 }
 
 .search-section {
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .search-box {
@@ -85,9 +95,73 @@ button:hover {
 
 .business-card {
     background: white;
-    padding: 15px;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+}
+
+.business-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-color: #cbd5e1;
+}
+
+.business-tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: #e2e8f0;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    color: #475569;
+    margin: 0.5rem 0;
+}
+
+.sidebar {
+    background: #f8fafc;
+    border-left: 1px solid #e2e8f0;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.sidebar-content {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.console-toggle {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background: white;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+    z-index: 100;
+    border: 1px solid #e2e8f0;
+}
+
+.console {
+    position: fixed;
+    bottom: -400px;
+    right: 1rem;
+    width: 400px;
+    background: white;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+    transition: bottom 0.3s ease;
+    z-index: 99;
+    border: 1px solid #e2e8f0;
+    border-bottom: none;
+}
+
+.console.open {
+    bottom: 0;
 }
 
 .business-card h3 {

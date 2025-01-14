@@ -8,32 +8,37 @@
 </head>
 <body>
     <div class="dashboard">
-        <div class="search-section">
-            <h1>Business Finder</h1>
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="Enter location...">
-                <button id="search-btn">Search</button>
-            </div>
-        </div>
-
-        <div class="content">
-            <div class="console">
-                <h2>Activity Log</h2>
-                <div id="console-log"></div>
+        <div class="main-content">
+            <div class="search-section">
+                <h1 class="text-2xl font-bold mb-4">Business Finder</h1>
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Enter location..." class="w-full">
+                    <button id="search-btn" class="bg-blue-600 hover:bg-blue-700">Search</button>
+                </div>
             </div>
 
             <div class="business-list">
-                <h2>Businesses</h2>
                 <div class="controls">
-                    <select id="sort-by">
+                    <select id="sort-by" class="p-2 border rounded">
                         <option value="name">Name</option>
                         <option value="type">Type</option>
                         <option value="date">Date Added</option>
                     </select>
-                    <input type="text" id="filter" placeholder="Filter businesses...">
+                    <input type="text" id="filter" placeholder="Filter businesses..." class="p-2 border rounded">
                 </div>
-                <div id="businesses-container"></div>
+                <div id="businesses-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6"></div>
             </div>
+        </div>
+
+        <div class="sidebar">
+            <div id="sidebar-content">
+                <div class="text-gray-500">Select a business to view details</div>
+            </div>
+        </div>
+
+        <div class="console">
+            <h2 class="p-4 border-b font-semibold">Activity Log</h2>
+            <div id="console-log" class="p-4"></div>
         </div>
     </div>
 
