@@ -191,12 +191,52 @@ class GoogleMapsScraper:
         # Handle "all" search by searching each type individually
         if 'all' in business_types:
             logger.info("Searching all business types individually...")
+            # Sort business types alphabetically
+            sorted_types = sorted(self.BUSINESS_TYPES)
+            
             # Search each business type one by one
-            for business_type in self.BUSINESS_TYPES:
+            for business_type in sorted_types:
                 logger.info("Searching for %s businesses...", business_type)
                 
-                # Always do fresh search
-                logger.info(f"Searching for {business_type} businesses...")
+                # Track nearby search request
+                self.request_count['nearby_search'] += 1
+                places_result = self.gmaps.places_nearby(
+                    location=f"{location['lat']},{location['lng']}",
+                    radius=radius,
+                    type=business_type
+                )
+                type_results = places_result['results']
+                
+                # Get additional pages if available
+                while 'next_page_token' in places_result and len(type_results) < 60:
+                    time.sleep(2)  # Required delay for next_page_token
+                    places_result = self.gmaps.places_nearby(
+                        page_token=places_result['next_page_token']
+                    )
+                    type_results.extend(places_result['results'])
+                
+                logger.info("Found %d %s businesses", len(type_results), business_type)
+                
+                # Process and save the results
+                if type_results:
+                    processed_results = []
+                    for place in type_results:
+                        try:
+                            # Add the search type to the place data before processing
+                            place['search_type'] = business_type
+                            business_data = self.process_business(place)
+                            if business_data:
+                                processed_results.append(business_data)
+                        except Exception as e:
+                            logger.error(f"Error processing business {place.get('name')}: {str(e)}")
+                    
+                    if processed_results:
+                        # Save results to main JSON file
+                        self.save_businesses_to_json(processed_results)
+                        all_results.extend(processed_results)
+                
+                # Avoid hitting API rate limits
+                time.sleep(1)
                 
                 # Track nearby search request
                 self.request_count['nearby_search'] += 1
@@ -241,49 +281,46 @@ class GoogleMapsScraper:
             # Search each business type individually
             for business_type in business_types:
                 logger.info("Searching for %s businesses...", business_type)
-            
-                # Always do fresh search
-                logger.info(f"Searching for {business_type} businesses...")
-            
-            # Track nearby search request
-            self.request_count['nearby_search'] += 1
-            places_result = self.gmaps.places_nearby(
-                location=f"{location['lat']},{location['lng']}",
-                radius=radius,
-                type=business_type
-            )
-            type_results = places_result['results']
-            
-            # Get additional pages if available
-            while 'next_page_token' in places_result and len(type_results) < 60:
-                time.sleep(2)  # Required delay for next_page_token
-                places_result = self.gmaps.places_nearby(
-                    page_token=places_result['next_page_token']
-                )
-                type_results.extend(places_result['results'])
-            
-            logger.info("Found %d %s businesses", len(type_results), business_type)
-            
-            # Process and cache the results
-            if type_results:
-                processed_results = []
-                for place in type_results:
-                    try:
-                        # Add the search type to the place data before processing
-                        place['search_type'] = business_type
-                        business_data = self.process_business(place)
-                        if business_data:
-                            processed_results.append(business_data)
-                    except Exception as e:
-                        logger.error(f"Error processing business {place.get('name')}: {str(e)}")
                 
-                if processed_results:
-                    # Save to cache
-                    self.save_businesses_to_cache(place_id, business_type, processed_results)
-                    all_results.extend(processed_results)
-            
-            # Avoid hitting API rate limits
-            time.sleep(1)
+                # Track nearby search request
+                self.request_count['nearby_search'] += 1
+                places_result = self.gmaps.places_nearby(
+                    location=f"{location['lat']},{location['lng']}",
+                    radius=radius,
+                    type=business_type
+                )
+                type_results = places_result['results']
+                
+                # Get additional pages if available
+                while 'next_page_token' in places_result and len(type_results) < 60:
+                    time.sleep(2)  # Required delay for next_page_token
+                    places_result = self.gmaps.places_nearby(
+                        page_token=places_result['next_page_token']
+                    )
+                    type_results.extend(places_result['results'])
+                
+                logger.info("Found %d %s businesses", len(type_results), business_type)
+                
+                # Process and save the results
+                if type_results:
+                    processed_results = []
+                    for place in type_results:
+                        try:
+                            # Add the search type to the place data before processing
+                            place['search_type'] = business_type
+                            business_data = self.process_business(place)
+                            if business_data:
+                                processed_results.append(business_data)
+                        except Exception as e:
+                            logger.error(f"Error processing business {place.get('name')}: {str(e)}")
+                    
+                    if processed_results:
+                        # Save results to main JSON file
+                        self.save_businesses_to_json(processed_results)
+                        all_results.extend(processed_results)
+                
+                # Avoid hitting API rate limits
+                time.sleep(1)
         
         logger.info("Found %d businesses in total search", len(all_results))
         results = []
