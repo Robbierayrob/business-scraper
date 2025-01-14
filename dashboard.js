@@ -160,6 +160,15 @@ class Dashboard {
                             View on Map
                         </a>
                     </div>` : ''}
+                    ${b.latitude && b.longitude ? `
+                    <div class="info-row">
+                        <span class="info-label">Map:</span>
+                        <a href="https://www.google.com/maps/search/?api=1&query=${b.latitude},${b.longitude}" 
+                           target="_blank" 
+                           class="link">
+                            View on Map
+                        </a>
+                    </div>` : ''}
                     ${b.phone ? `<div class="info-row">
                         <span class="info-label">Phone:</span>
                         <span class="info-value">${b.phone}</span>
