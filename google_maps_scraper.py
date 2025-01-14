@@ -357,38 +357,21 @@ def main():
         logger.warning("No radius selected by user")
         return
         
-    # Search all business types sequentially
+    # Search just restaurants
     logger.info("Starting business search with radius: %d meters", radius)
-    print("\nSearching all business types sequentially...")
+    print("\nSearching restaurants...")
     
-    # Perform search in chunks to avoid timeout
     results = pd.DataFrame()
-    chunk_size = 5  # Reduced chunk size to avoid API limits
-    for i in range(0, len(scraper.BUSINESS_TYPES), chunk_size):
-        types_chunk = scraper.BUSINESS_TYPES[i:i + chunk_size]
-        print(f"\nSearching types: {', '.join(types_chunk)}")
-        
-        try:
-            chunk_results = scraper.search_businesses(
-                place_id=place_id,
-                radius=radius,
-                business_types=types_chunk
-            )
-        except Exception as e:
-            logger.error(f"Error searching types {types_chunk}: {str(e)}")
-            continue
-        
-        # Combine results while avoiding duplicates using name + address as unique key
-        if not results.empty:
-            existing_keys = set(zip(results['name'], results['address']))
-            chunk_results = chunk_results[
-                ~chunk_results.apply(lambda x: (x['name'], x['address']) in existing_keys, axis=1)
-            ]
-            
-        if not chunk_results.empty:
-            results = pd.concat([results, chunk_results])
-        
-        print(f"Total businesses found so far: {len(results)}")
+    try:
+        results = scraper.search_businesses(
+            place_id=place_id,
+            radius=radius,
+            business_types=['restaurant']
+        )
+    except Exception as e:
+        logger.error(f"Error searching restaurants: {str(e)}")
+    
+    print(f"Total restaurants found: {len(results)}")
     
     # Save results to memory
     scraper.cached_results = results.to_dict('records')
