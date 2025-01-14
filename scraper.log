@@ -1,0 +1,472 @@
+2025-01-15 03:24:16,633 - INFO - Starting Google Maps scraper
+2025-01-15 03:24:16,633 - INFO - Initializing GoogleMapsScraper
+2025-01-15 03:24:16,633 - INFO - API queries_quota: 60
+2025-01-15 03:24:23,086 - INFO - Found 3 address suggestions for: canley vale australia 2166
+2025-01-15 03:24:24,754 - INFO - User selected address: Canley Vale NSW 2166, Australia
+2025-01-15 03:24:26,184 - INFO - Starting business search with radius: 2500 meters
+2025-01-15 03:24:26,184 - INFO - Searching businesses near place_id: ChIJZw_6LRmWEmsRkK8yFmh9AQU
+2025-01-15 03:24:26,361 - INFO - Searching businesses within 2500 meters radius
+2025-01-15 03:24:26,680 - INFO - Found 20 businesses in initial search
+2025-01-15 03:24:29,877 - INFO - Processed 20 businesses successfully
+2025-01-15 03:24:29,881 - INFO - Cached 20 business results
+2025-01-15 03:24:47,436 - INFO - Added 20 new businesses to businesses.json
+2025-01-15 03:24:47,436 - INFO - Total businesses in file: 20
+2025-01-15 03:24:57,809 - INFO - Starting detailed scraping of 20 businesses
+2025-01-15 03:38:21,948 - INFO - Initializing GoogleMapsScraper
+2025-01-15 03:38:21,948 - INFO - API queries_quota: 60
+2025-01-15 03:41:45,453 - INFO - Initializing GoogleMapsScraper
+2025-01-15 03:41:45,453 - INFO - API queries_quota: 60
+2025-01-15 03:41:45,456 - ERROR - Form data requires "python-multipart" to be installed. 
+You can install "python-multipart" with: 
+
+pip install python-multipart
+
+2025-01-15 03:42:32,547 - INFO - Initializing GoogleMapsScraper
+2025-01-15 03:42:32,548 - INFO - API queries_quota: 60
+2025-01-15 03:43:40,377 - INFO - Starting Google Maps scraper
+2025-01-15 03:43:40,377 - INFO - Initializing GoogleMapsScraper
+2025-01-15 03:43:40,378 - INFO - API queries_quota: 60
+2025-01-15 03:43:45,340 - INFO - Found 3 address suggestions for: Canley Vale
+2025-01-15 03:43:46,488 - INFO - Starting business search with radius: 2500 meters
+2025-01-15 03:43:46,489 - INFO - Searching businesses near place_id: [{'description': 'Canley Vale NSW, Australia', 'place_id': 'ChIJZw_6LRmWEmsRkK8yFmh9AQU'}, {'description': 'Canley Vale Road, Canley Heights NSW, Australia', 'place_id': 'Ei9DYW5sZXkgVmFsZSBSb2FkLCBDYW5sZXkgSGVpZ2h0cyBOU1csIEF1c3RyYWxpYSIuKiwKFAoSCWvdefxolhJrEU4yV8boZIH7EhQKEgnPaOoxaZYSaxGArzIWaH0BBQ'}, {'description': 'Canley Vale Road, Wetherill Park NSW, Australia', 'place_id': 'Ei9DYW5sZXkgVmFsZSBSb2FkLCBXZXRoZXJpbGwgUGFyayBOU1csIEF1c3RyYWxpYSIuKiwKFAoSCWGFoMwClxJrEXDuF5tOjVX6EhQKEgnXdWu7BZcSaxHgzzIWaH0BBQ'}]
+2025-01-15 03:44:47,872 - INFO - Starting Google Maps scraper
+2025-01-15 03:44:47,872 - INFO - Initializing GoogleMapsScraper
+2025-01-15 03:44:47,873 - INFO - API queries_quota: 60
+2025-01-15 03:44:49,794 - INFO - Found 3 address suggestions for: Canley Vale
+2025-01-15 03:44:55,284 - INFO - Starting business search with radius: 1000 meters
+2025-01-15 03:44:55,285 - INFO - Searching businesses near place_id: Ei9DYW5sZXkgVmFsZSBSb2FkLCBDYW5sZXkgSGVpZ2h0cyBOU1csIEF1c3RyYWxpYSIuKiwKFAoSCWvdefxolhJrEU4yV8boZIH7EhQKEgnPaOoxaZYSaxGArzIWaH0BBQ
+2025-01-15 03:44:55,471 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:44:55,471 - INFO - Searching for accounting businesses...
+2025-01-15 03:44:55,991 - INFO - Found 5 accounting businesses
+2025-01-15 03:44:56,992 - INFO - Searching for airport businesses...
+2025-01-15 03:44:57,146 - INFO - Found 0 airport businesses
+2025-01-15 03:44:58,147 - INFO - Searching for amusement_park businesses...
+2025-01-15 03:44:58,297 - INFO - Found 0 amusement_park businesses
+2025-01-15 03:44:59,298 - INFO - Searching for aquarium businesses...
+2025-01-15 03:44:59,443 - INFO - Found 0 aquarium businesses
+2025-01-15 03:45:00,443 - INFO - Searching for art_gallery businesses...
+2025-01-15 03:45:00,590 - INFO - Found 0 art_gallery businesses
+2025-01-15 03:45:01,590 - INFO - Found 5 businesses in total search
+2025-01-15 03:45:02,400 - INFO - Processed 5 businesses successfully
+2025-01-15 03:45:02,401 - INFO - Searching businesses near place_id: Ei9DYW5sZXkgVmFsZSBSb2FkLCBDYW5sZXkgSGVpZ2h0cyBOU1csIEF1c3RyYWxpYSIuKiwKFAoSCWvdefxolhJrEU4yV8boZIH7EhQKEgnPaOoxaZYSaxGArzIWaH0BBQ
+2025-01-15 03:45:02,536 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:45:02,536 - INFO - Searching for atm businesses...
+2025-01-15 03:45:02,726 - INFO - Found 1 atm businesses
+2025-01-15 03:45:03,726 - INFO - Searching for bakery businesses...
+2025-01-15 03:45:03,929 - INFO - Found 4 bakery businesses
+2025-01-15 03:45:04,929 - INFO - Searching for bank businesses...
+2025-01-15 03:45:05,063 - INFO - Found 0 bank businesses
+2025-01-15 03:45:06,064 - INFO - Searching for bar businesses...
+2025-01-15 03:45:06,286 - INFO - Found 7 bar businesses
+2025-01-15 03:45:07,287 - INFO - Searching for beauty_salon businesses...
+2025-01-15 03:45:07,505 - INFO - Found 19 beauty_salon businesses
+2025-01-15 03:45:08,505 - INFO - Found 31 businesses in total search
+2025-01-15 03:45:13,136 - INFO - Processed 31 businesses successfully
+2025-01-15 03:46:20,337 - INFO - Starting Google Maps scraper
+2025-01-15 03:46:20,338 - INFO - Initializing GoogleMapsScraper
+2025-01-15 03:46:20,338 - INFO - API queries_quota: 60
+2025-01-15 03:46:24,780 - INFO - Found 5 address suggestions for: Canley Heights
+2025-01-15 03:46:29,126 - INFO - Starting business search with radius: 1000 meters
+2025-01-15 03:46:29,126 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:46:29,263 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:46:29,263 - INFO - Searching for accounting businesses...
+2025-01-15 03:46:29,755 - INFO - Found 5 accounting businesses
+2025-01-15 03:46:30,756 - INFO - Searching for airport businesses...
+2025-01-15 03:46:30,889 - INFO - Found 0 airport businesses
+2025-01-15 03:46:31,890 - INFO - Searching for amusement_park businesses...
+2025-01-15 03:46:32,031 - INFO - Found 0 amusement_park businesses
+2025-01-15 03:46:33,031 - INFO - Searching for aquarium businesses...
+2025-01-15 03:46:33,175 - INFO - Found 0 aquarium businesses
+2025-01-15 03:46:34,177 - INFO - Searching for art_gallery businesses...
+2025-01-15 03:46:34,305 - INFO - Found 0 art_gallery businesses
+2025-01-15 03:46:35,305 - INFO - Found 5 businesses in total search
+2025-01-15 03:46:35,922 - INFO - Processed 5 businesses successfully
+2025-01-15 03:46:35,924 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:46:36,041 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:46:36,041 - INFO - Searching for atm businesses...
+2025-01-15 03:46:36,190 - INFO - Found 1 atm businesses
+2025-01-15 03:46:37,190 - INFO - Searching for bakery businesses...
+2025-01-15 03:46:37,348 - INFO - Found 4 bakery businesses
+2025-01-15 03:46:38,348 - INFO - Searching for bank businesses...
+2025-01-15 03:46:38,484 - INFO - Found 0 bank businesses
+2025-01-15 03:46:39,486 - INFO - Searching for bar businesses...
+2025-01-15 03:46:39,643 - INFO - Found 7 bar businesses
+2025-01-15 03:46:40,645 - INFO - Searching for beauty_salon businesses...
+2025-01-15 03:46:40,890 - INFO - Found 19 beauty_salon businesses
+2025-01-15 03:46:41,891 - INFO - Found 31 businesses in total search
+2025-01-15 03:46:45,866 - INFO - Processed 31 businesses successfully
+2025-01-15 03:46:45,868 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:46:45,988 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:46:45,988 - INFO - Searching for bicycle_store businesses...
+2025-01-15 03:46:46,124 - INFO - Found 0 bicycle_store businesses
+2025-01-15 03:46:47,126 - INFO - Searching for book_store businesses...
+2025-01-15 03:46:47,268 - INFO - Found 0 book_store businesses
+2025-01-15 03:46:48,269 - INFO - Searching for bowling_alley businesses...
+2025-01-15 03:46:48,404 - INFO - Found 0 bowling_alley businesses
+2025-01-15 03:46:49,405 - INFO - Searching for bus_station businesses...
+2025-01-15 03:46:49,599 - INFO - Found 1 bus_station businesses
+2025-01-15 03:46:50,599 - INFO - Searching for cafe businesses...
+2025-01-15 03:46:50,823 - INFO - Found 8 cafe businesses
+2025-01-15 03:46:51,824 - INFO - Found 9 businesses in total search
+2025-01-15 03:46:53,155 - INFO - Processed 9 businesses successfully
+2025-01-15 03:46:53,156 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:46:53,277 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:46:53,277 - INFO - Searching for campground businesses...
+2025-01-15 03:46:53,410 - INFO - Found 0 campground businesses
+2025-01-15 03:46:54,410 - INFO - Searching for car_dealer businesses...
+2025-01-15 03:46:54,556 - INFO - Found 0 car_dealer businesses
+2025-01-15 03:46:55,557 - INFO - Searching for car_rental businesses...
+2025-01-15 03:46:55,751 - INFO - Found 2 car_rental businesses
+2025-01-15 03:46:56,752 - INFO - Searching for car_repair businesses...
+2025-01-15 03:46:56,971 - INFO - Found 5 car_repair businesses
+2025-01-15 03:46:57,972 - INFO - Searching for car_wash businesses...
+2025-01-15 03:46:58,114 - INFO - Found 0 car_wash businesses
+2025-01-15 03:46:59,115 - INFO - Found 7 businesses in total search
+2025-01-15 03:47:00,197 - INFO - Processed 7 businesses successfully
+2025-01-15 03:47:00,198 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:47:00,319 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:47:00,319 - INFO - Searching for casino businesses...
+2025-01-15 03:47:00,454 - INFO - Found 0 casino businesses
+2025-01-15 03:47:01,454 - INFO - Searching for cemetery businesses...
+2025-01-15 03:47:01,593 - INFO - Found 0 cemetery businesses
+2025-01-15 03:47:02,593 - INFO - Searching for church businesses...
+2025-01-15 03:47:02,797 - INFO - Found 3 church businesses
+2025-01-15 03:47:03,797 - INFO - Searching for city_hall businesses...
+2025-01-15 03:47:03,934 - INFO - Found 0 city_hall businesses
+2025-01-15 03:47:04,934 - INFO - Searching for clothing_store businesses...
+2025-01-15 03:47:05,150 - INFO - Found 2 clothing_store businesses
+2025-01-15 03:47:06,151 - INFO - Found 5 businesses in total search
+2025-01-15 03:47:06,912 - INFO - Processed 5 businesses successfully
+2025-01-15 03:47:06,914 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:47:07,040 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:47:07,040 - INFO - Searching for convenience_store businesses...
+2025-01-15 03:47:07,179 - INFO - Found 0 convenience_store businesses
+2025-01-15 03:47:08,179 - INFO - Searching for courthouse businesses...
+2025-01-15 03:47:08,316 - INFO - Found 0 courthouse businesses
+2025-01-15 03:47:09,317 - INFO - Searching for dentist businesses...
+2025-01-15 03:47:09,539 - INFO - Found 4 dentist businesses
+2025-01-15 03:47:10,540 - INFO - Searching for department_store businesses...
+2025-01-15 03:47:10,676 - INFO - Found 0 department_store businesses
+2025-01-15 03:47:11,677 - INFO - Searching for doctor businesses...
+2025-01-15 03:47:11,902 - INFO - Found 8 doctor businesses
+2025-01-15 03:47:12,903 - INFO - Found 12 businesses in total search
+2025-01-15 03:47:14,719 - INFO - Processed 12 businesses successfully
+2025-01-15 03:47:14,721 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:47:14,843 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:47:14,843 - INFO - Searching for drugstore businesses...
+2025-01-15 03:47:14,980 - INFO - Found 0 drugstore businesses
+2025-01-15 03:47:15,981 - INFO - Searching for electrician businesses...
+2025-01-15 03:47:16,185 - INFO - Found 4 electrician businesses
+2025-01-15 03:47:17,187 - INFO - Searching for electronics_store businesses...
+2025-01-15 03:47:17,390 - INFO - Found 1 electronics_store businesses
+2025-01-15 03:47:18,392 - INFO - Searching for embassy businesses...
+2025-01-15 03:47:18,528 - INFO - Found 0 embassy businesses
+2025-01-15 03:47:19,529 - INFO - Searching for fire_station businesses...
+2025-01-15 03:47:19,712 - INFO - Found 1 fire_station businesses
+2025-01-15 03:47:20,714 - INFO - Found 6 businesses in total search
+2025-01-15 03:47:21,618 - INFO - Processed 6 businesses successfully
+2025-01-15 03:47:21,622 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:47:21,742 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:47:21,742 - INFO - Searching for florist businesses...
+2025-01-15 03:47:21,932 - INFO - Found 1 florist businesses
+2025-01-15 03:47:22,933 - INFO - Searching for funeral_home businesses...
+2025-01-15 03:47:23,069 - INFO - Found 0 funeral_home businesses
+2025-01-15 03:47:24,070 - INFO - Searching for furniture_store businesses...
+2025-01-15 03:47:24,210 - INFO - Found 0 furniture_store businesses
+2025-01-15 03:47:25,211 - INFO - Searching for gas_station businesses...
+2025-01-15 03:47:25,404 - INFO - Found 2 gas_station businesses
+2025-01-15 03:47:26,405 - INFO - Searching for gym businesses...
+2025-01-15 03:47:26,592 - INFO - Found 1 gym businesses
+2025-01-15 03:47:27,594 - INFO - Found 4 businesses in total search
+2025-01-15 03:47:28,172 - INFO - Processed 4 businesses successfully
+2025-01-15 03:47:28,174 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:47:28,294 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:47:28,294 - INFO - Searching for hair_care businesses...
+2025-01-15 03:47:28,504 - INFO - Found 8 hair_care businesses
+2025-01-15 03:47:29,505 - INFO - Searching for hardware_store businesses...
+2025-01-15 03:47:29,640 - INFO - Found 0 hardware_store businesses
+2025-01-15 03:47:30,640 - INFO - Searching for hindu_temple businesses...
+2025-01-15 03:47:30,774 - INFO - Found 0 hindu_temple businesses
+2025-01-15 03:47:31,775 - INFO - Searching for home_goods_store businesses...
+2025-01-15 03:47:32,003 - INFO - Found 5 home_goods_store businesses
+2025-01-15 03:47:33,004 - INFO - Searching for hospital businesses...
+2025-01-15 03:47:33,240 - INFO - Found 1 hospital businesses
+2025-01-15 03:47:34,242 - INFO - Found 14 businesses in total search
+2025-01-15 03:47:36,428 - INFO - Processed 14 businesses successfully
+2025-01-15 03:47:36,430 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:47:36,553 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:47:36,553 - INFO - Searching for insurance_agency businesses...
+2025-01-15 03:47:36,691 - INFO - Found 0 insurance_agency businesses
+2025-01-15 03:47:37,693 - INFO - Searching for jewelry_store businesses...
+2025-01-15 03:47:37,831 - INFO - Found 0 jewelry_store businesses
+2025-01-15 03:47:38,832 - INFO - Searching for laundry businesses...
+2025-01-15 03:47:38,972 - INFO - Found 0 laundry businesses
+2025-01-15 03:47:39,973 - INFO - Searching for lawyer businesses...
+2025-01-15 03:47:40,172 - INFO - Found 4 lawyer businesses
+2025-01-15 03:47:41,173 - INFO - Searching for library businesses...
+2025-01-15 03:47:41,314 - INFO - Found 0 library businesses
+2025-01-15 03:47:42,314 - INFO - Found 4 businesses in total search
+2025-01-15 03:47:42,935 - INFO - Processed 4 businesses successfully
+2025-01-15 03:47:42,937 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:47:43,062 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:47:43,062 - INFO - Searching for light_rail_station businesses...
+2025-01-15 03:47:43,195 - INFO - Found 0 light_rail_station businesses
+2025-01-15 03:47:44,196 - INFO - Searching for liquor_store businesses...
+2025-01-15 03:47:44,385 - INFO - Found 3 liquor_store businesses
+2025-01-15 03:47:45,386 - INFO - Searching for local_government_office businesses...
+2025-01-15 03:47:45,528 - INFO - Found 0 local_government_office businesses
+2025-01-15 03:47:46,529 - INFO - Searching for locksmith businesses...
+2025-01-15 03:47:46,669 - INFO - Found 0 locksmith businesses
+2025-01-15 03:47:47,670 - INFO - Searching for lodging businesses...
+2025-01-15 03:47:47,816 - INFO - Found 0 lodging businesses
+2025-01-15 03:47:48,817 - INFO - Found 3 businesses in total search
+2025-01-15 03:47:49,258 - INFO - Processed 3 businesses successfully
+2025-01-15 03:47:49,260 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:47:49,384 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:47:49,384 - INFO - Searching for meal_delivery businesses...
+2025-01-15 03:47:49,563 - INFO - Found 1 meal_delivery businesses
+2025-01-15 03:47:50,565 - INFO - Searching for meal_takeaway businesses...
+2025-01-15 03:47:50,759 - INFO - Found 4 meal_takeaway businesses
+2025-01-15 03:47:51,760 - INFO - Searching for mosque businesses...
+2025-01-15 03:47:51,944 - INFO - Found 1 mosque businesses
+2025-01-15 03:47:52,945 - INFO - Searching for movie_rental businesses...
+2025-01-15 03:47:53,084 - INFO - Found 0 movie_rental businesses
+2025-01-15 03:47:54,085 - INFO - Searching for movie_theater businesses...
+2025-01-15 03:47:54,224 - INFO - Found 0 movie_theater businesses
+2025-01-15 03:47:55,224 - INFO - Found 6 businesses in total search
+2025-01-15 03:47:56,096 - INFO - Processed 6 businesses successfully
+2025-01-15 03:47:56,098 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:47:56,242 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:47:56,242 - INFO - Searching for moving_company businesses...
+2025-01-15 03:47:56,387 - INFO - Found 0 moving_company businesses
+2025-01-15 03:47:57,388 - INFO - Searching for museum businesses...
+2025-01-15 03:47:57,522 - INFO - Found 0 museum businesses
+2025-01-15 03:47:58,522 - INFO - Searching for night_club businesses...
+2025-01-15 03:47:58,707 - INFO - Found 1 night_club businesses
+2025-01-15 03:47:59,707 - INFO - Searching for painter businesses...
+2025-01-15 03:47:59,874 - INFO - Found 1 painter businesses
+2025-01-15 03:48:00,875 - INFO - Searching for park businesses...
+2025-01-15 03:48:01,159 - INFO - Found 6 park businesses
+2025-01-15 03:48:02,159 - INFO - Found 8 businesses in total search
+2025-01-15 03:48:03,363 - INFO - Processed 8 businesses successfully
+2025-01-15 03:48:03,365 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:48:03,490 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:48:03,490 - INFO - Searching for parking businesses...
+2025-01-15 03:48:03,669 - INFO - Found 2 parking businesses
+2025-01-15 03:48:04,670 - INFO - Searching for pet_store businesses...
+2025-01-15 03:48:04,810 - INFO - Found 0 pet_store businesses
+2025-01-15 03:48:05,811 - INFO - Searching for pharmacy businesses...
+2025-01-15 03:48:06,015 - INFO - Found 3 pharmacy businesses
+2025-01-15 03:48:07,015 - INFO - Searching for physiotherapist businesses...
+2025-01-15 03:48:07,245 - INFO - Found 7 physiotherapist businesses
+2025-01-15 03:48:08,246 - INFO - Searching for plumber businesses...
+2025-01-15 03:48:08,450 - INFO - Found 2 plumber businesses
+2025-01-15 03:48:09,450 - INFO - Found 14 businesses in total search
+2025-01-15 03:48:11,499 - INFO - Processed 14 businesses successfully
+2025-01-15 03:48:11,501 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:48:11,622 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:48:11,622 - INFO - Searching for police businesses...
+2025-01-15 03:48:11,754 - INFO - Found 0 police businesses
+2025-01-15 03:48:12,755 - INFO - Searching for post_office businesses...
+2025-01-15 03:48:12,943 - INFO - Found 1 post_office businesses
+2025-01-15 03:48:13,943 - INFO - Searching for primary_school businesses...
+2025-01-15 03:48:14,134 - INFO - Found 1 primary_school businesses
+2025-01-15 03:48:15,135 - INFO - Searching for real_estate_agency businesses...
+2025-01-15 03:48:15,430 - INFO - Found 5 real_estate_agency businesses
+2025-01-15 03:48:16,431 - INFO - Searching for restaurant businesses...
+2025-01-15 03:48:21,157 - INFO - Found 41 restaurant businesses
+2025-01-15 03:48:22,157 - INFO - Found 48 businesses in total search
+2025-01-15 03:48:29,076 - INFO - Processed 48 businesses successfully
+2025-01-15 03:48:29,079 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:48:29,202 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:48:29,203 - INFO - Searching for roofing_contractor businesses...
+2025-01-15 03:48:29,342 - INFO - Found 0 roofing_contractor businesses
+2025-01-15 03:48:30,343 - INFO - Searching for rv_park businesses...
+2025-01-15 03:48:30,478 - INFO - Found 0 rv_park businesses
+2025-01-15 03:48:31,479 - INFO - Searching for school businesses...
+2025-01-15 03:48:31,668 - INFO - Found 3 school businesses
+2025-01-15 03:48:32,669 - INFO - Searching for secondary_school businesses...
+2025-01-15 03:48:32,805 - INFO - Found 0 secondary_school businesses
+2025-01-15 03:48:33,806 - INFO - Searching for shoe_store businesses...
+2025-01-15 03:48:33,958 - INFO - Found 0 shoe_store businesses
+2025-01-15 03:48:34,959 - INFO - Found 3 businesses in total search
+2025-01-15 03:48:35,380 - INFO - Processed 3 businesses successfully
+2025-01-15 03:48:35,382 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:48:35,508 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:48:35,508 - INFO - Searching for shopping_mall businesses...
+2025-01-15 03:48:35,646 - INFO - Found 0 shopping_mall businesses
+2025-01-15 03:48:36,647 - INFO - Searching for spa businesses...
+2025-01-15 03:48:36,836 - INFO - Found 1 spa businesses
+2025-01-15 03:48:37,837 - INFO - Searching for stadium businesses...
+2025-01-15 03:48:37,971 - INFO - Found 0 stadium businesses
+2025-01-15 03:48:38,972 - INFO - Searching for storage businesses...
+2025-01-15 03:48:39,106 - INFO - Found 0 storage businesses
+2025-01-15 03:48:40,107 - INFO - Searching for store businesses...
+2025-01-15 03:48:44,771 - INFO - Found 43 store businesses
+2025-01-15 03:48:45,772 - INFO - Found 44 businesses in total search
+2025-01-15 03:48:51,859 - INFO - Processed 44 businesses successfully
+2025-01-15 03:48:51,861 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:48:51,985 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:48:51,986 - INFO - Searching for subway_station businesses...
+2025-01-15 03:48:52,124 - INFO - Found 0 subway_station businesses
+2025-01-15 03:48:53,125 - INFO - Searching for supermarket businesses...
+2025-01-15 03:48:53,279 - INFO - Found 1 supermarket businesses
+2025-01-15 03:48:54,280 - INFO - Searching for synagogue businesses...
+2025-01-15 03:48:54,424 - INFO - Found 0 synagogue businesses
+2025-01-15 03:48:55,425 - INFO - Searching for taxi_stand businesses...
+2025-01-15 03:48:55,561 - INFO - Found 0 taxi_stand businesses
+2025-01-15 03:48:56,562 - INFO - Searching for tourist_attraction businesses...
+2025-01-15 03:48:56,700 - INFO - Found 0 tourist_attraction businesses
+2025-01-15 03:48:57,702 - INFO - Found 1 businesses in total search
+2025-01-15 03:48:57,827 - INFO - Processed 1 businesses successfully
+2025-01-15 03:48:57,829 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:48:57,961 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:48:57,961 - INFO - Searching for train_station businesses...
+2025-01-15 03:48:58,097 - INFO - Found 0 train_station businesses
+2025-01-15 03:48:59,098 - INFO - Searching for transit_station businesses...
+2025-01-15 03:49:03,789 - INFO - Found 52 transit_station businesses
+2025-01-15 03:49:04,790 - INFO - Searching for travel_agency businesses...
+2025-01-15 03:49:04,969 - INFO - Found 2 travel_agency businesses
+2025-01-15 03:49:05,970 - INFO - Searching for university businesses...
+2025-01-15 03:49:06,171 - INFO - Found 1 university businesses
+2025-01-15 03:49:07,172 - INFO - Searching for veterinary_care businesses...
+2025-01-15 03:49:07,375 - INFO - Found 1 veterinary_care businesses
+2025-01-15 03:49:08,376 - INFO - Found 56 businesses in total search
+2025-01-15 03:49:16,327 - INFO - Processed 56 businesses successfully
+2025-01-15 03:49:16,330 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:49:16,454 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:49:16,454 - INFO - Searching for zoo businesses...
+2025-01-15 03:49:16,598 - INFO - Found 0 zoo businesses
+2025-01-15 03:49:17,599 - INFO - Found 0 businesses in total search
+2025-01-15 03:49:17,599 - INFO - Processed 0 businesses successfully
+2025-01-15 03:49:17,608 - INFO - Cached 237 business results
+2025-01-15 03:52:44,090 - INFO - Starting Google Maps scraper
+2025-01-15 03:52:44,090 - INFO - Initializing GoogleMapsScraper
+2025-01-15 03:52:44,091 - INFO - API queries_quota: 60
+2025-01-15 03:52:48,778 - INFO - Found 5 address suggestions for: Canley Heights
+2025-01-15 03:52:52,701 - INFO - Starting business search with radius: 2000 meters
+2025-01-15 03:52:52,702 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:52:52,842 - INFO - Searching businesses within 2000 meters radius
+2025-01-15 03:52:52,843 - INFO - Searching for restaurant businesses...
+2025-01-15 03:52:57,866 - INFO - Found 60 restaurant businesses
+2025-01-15 03:52:57,866 - ERROR - Error processing business Holy Basil Canley Heights: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,866 - ERROR - Error processing business Twelve Spices: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,866 - ERROR - Error processing business Hai Au Lang Nuong: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,866 - ERROR - Error processing business Iron Chef Chinese Seafood Restaurant Cabramatta: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,866 - ERROR - Error processing business bp: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,866 - ERROR - Error processing business Dai Lam Son Seafood Restaurant: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,866 - ERROR - Error processing business Thanh Mai Restaurant: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,866 - ERROR - Error processing business Diem Hen Cafe: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,866 - ERROR - Error processing business Carter & G's: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,866 - ERROR - Error processing business Delights Brasserie: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business Dubai8: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business Fabrika by Madera: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business Gigino: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business Pho Saigon: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business Wishbone Poultry: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business Cabramatta BBQ Shop / Tan Hong Phat BBQ: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business Donut King Fairfield West: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business Sydney Best Dim Sim: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business Kaffir Lime Thai & Lao Cuisine: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business Aurum Poultry Co. - NSW: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business Bricks + Brunch: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business Battambang Restaurant II: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business Kaysone Sweets: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business Canley Hotel: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,867 - ERROR - Error processing business El Cortez Hotel Canley Heights: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,868 - ERROR - Error processing business Cooks Hill Hotel: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,868 - ERROR - Error processing business Fortune8 Chinese Restaurant: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,868 - ERROR - Error processing business Pho Tau Bay: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,868 - ERROR - Error processing business Avoca Woodfire Pizza: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,868 - ERROR - Error processing business Bach Dang Restaurant: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,868 - ERROR - Error processing business Tan Viet Noodle House: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,868 - ERROR - Error processing business Barluck Seafood Restaurant: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,868 - ERROR - Error processing business SILVER PEARL: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,868 - ERROR - Error processing business TK Something BBQ Restaurant: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,869 - ERROR - Error processing business Thanh Binh Restaurant: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,869 - ERROR - Error processing business Richard's On The Park: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,869 - ERROR - Error processing business Red Lea Cabramatta: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,869 - ERROR - Error processing business Pho Phung Vietnamese Cuisine: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,869 - ERROR - Error processing business V Lounge: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,869 - ERROR - Error processing business Fat Panda: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,869 - ERROR - Error processing business J's Kitchen Steak House: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,869 - ERROR - Error processing business VIP Karaoke Bar - Canley Heights: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,869 - ERROR - Error processing business RYOMA Japanese BBQ: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,869 - ERROR - Error processing business Broken Rice Vietnamese Restaurant - Canley Heights: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,869 - ERROR - Error processing business Ace Shawarma Shisha Bar (Kebab): 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,869 - ERROR - Error processing business Sammy's Kebabs: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,869 - ERROR - Error processing business La Grilla: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:57,869 - ERROR - Error processing business Sauce Thai Street Food: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:58,013 - ERROR - Error processing business Minh Tam: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:58,013 - ERROR - Error processing business Sinh Phu: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:58,013 - ERROR - Error processing business Simple Asian Vegetarian Cuisine: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:58,013 - ERROR - Error processing business Malatang's House: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:58,013 - ERROR - Error processing business Canley Heights BBQ Shop: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:58,013 - ERROR - Error processing business Kieng's Banh Bao & Catering: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:58,013 - ERROR - Error processing business Yung Lee Cafe & Restaurant: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:58,013 - ERROR - Error processing business The Hotpot Palace: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:58,013 - ERROR - Error processing business The Hotpot Palace Plus: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:58,014 - ERROR - Error processing business Huong Xua Canley Heights: 'GoogleMapsScraper' object has no attribute 'process_business'
+2025-01-15 03:52:59,015 - INFO - Found 0 businesses in total search
+2025-01-15 03:52:59,015 - INFO - Processed 0 businesses successfully
+2025-01-15 03:52:59,017 - INFO - Cached 0 business results
+2025-01-15 03:53:12,813 - INFO - User cancelled operation
+2025-01-15 03:54:37,148 - INFO - Starting Google Maps scraper
+2025-01-15 03:54:37,148 - INFO - Initializing GoogleMapsScraper
+2025-01-15 03:54:37,148 - INFO - API queries_quota: 60
+2025-01-15 03:54:40,890 - INFO - Found 5 address suggestions for: Canley Heights
+2025-01-15 03:54:44,343 - INFO - Starting business search with radius: 1000 meters
+2025-01-15 03:54:44,344 - INFO - Searching businesses near place_id: ChIJz2jqMWmWEmsRgK8yFmh9AQU
+2025-01-15 03:54:44,476 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:54:44,476 - INFO - Searching for restaurant businesses...
+2025-01-15 03:54:49,411 - INFO - Found 41 restaurant businesses
+2025-01-15 03:54:55,794 - INFO - Saved 41 businesses to cache: business_cache\ChIJz2jqMWmWEmsRgK8yFmh9AQU_restaurant.json
+2025-01-15 03:54:56,795 - INFO - Found 41 businesses in total search
+2025-01-15 03:54:56,939 - ERROR - Error searching restaurants: 'geometry'
+2025-01-15 03:54:56,940 - INFO - Cached 0 business results
+2025-01-15 03:55:57,988 - INFO - Starting Google Maps scraper
+2025-01-15 03:55:57,988 - INFO - Initializing GoogleMapsScraper
+2025-01-15 03:55:57,988 - INFO - API queries_quota: 60
+2025-01-15 03:56:02,160 - INFO - Found 4 address suggestions for: Canley Vale 2166
+2025-01-15 03:56:04,946 - INFO - Starting business search with radius: 1000 meters
+2025-01-15 03:56:04,947 - INFO - Searching businesses near place_id: ChIJZw_6LRmWEmsRkK8yFmh9AQU
+2025-01-15 03:56:05,120 - INFO - Searching businesses within 1000 meters radius
+2025-01-15 03:56:05,120 - INFO - Searching for restaurant businesses...
+2025-01-15 03:56:10,225 - INFO - Found 60 restaurant businesses
+2025-01-15 03:56:19,533 - INFO - Saved 60 businesses to cache: business_cache\ChIJZw_6LRmWEmsRkK8yFmh9AQU_restaurant.json
+2025-01-15 03:56:20,534 - INFO - Found 60 businesses in total search
+2025-01-15 03:56:28,330 - INFO - Processed 60 businesses successfully
+2025-01-15 03:56:28,334 - INFO - Cached 60 business results
+2025-01-15 03:56:34,931 - INFO - Found existing output file: businesses.json
+2025-01-15 03:56:34,934 - INFO - Added 58 new businesses to businesses.json
+2025-01-15 03:56:34,934 - INFO - Total businesses in file: 78
+2025-01-15 03:56:38,596 - INFO - Starting detailed scraping of 60 businesses
+2025-01-15 03:59:12,105 - INFO - Starting Google Maps scraper
+2025-01-15 03:59:12,106 - INFO - Initializing GoogleMapsScraper
+2025-01-15 03:59:12,106 - INFO - API queries_quota: 60
+2025-01-15 03:59:16,277 - INFO - Found 3 address suggestions for: Canley Valew 
+2025-01-15 03:59:20,204 - INFO - Starting business search with radius: 500 meters
+2025-01-15 03:59:20,205 - INFO - Searching businesses near place_id: ChIJZw_6LRmWEmsRkK8yFmh9AQU
+2025-01-15 03:59:20,327 - INFO - Searching businesses within 500 meters radius
+2025-01-15 03:59:20,327 - INFO - Searching for restaurant businesses...
+2025-01-15 03:59:20,341 - INFO - Loaded 60 restaurant businesses from cache
+2025-01-15 03:59:20,341 - INFO - Found 60 businesses in total search
+2025-01-15 03:59:20,341 - ERROR - Error searching restaurants: cannot access local variable 'places_result' where it is not associated with a value
+2025-01-15 03:59:20,342 - INFO - Cached 0 business results
+2025-01-15 03:59:34,539 - INFO - User cancelled operation
+2025-01-15 04:00:25,603 - INFO - Starting Google Maps scraper
+2025-01-15 04:00:25,604 - INFO - Initializing GoogleMapsScraper
+2025-01-15 04:00:25,604 - INFO - API queries_quota: 60
+2025-01-15 04:00:31,368 - INFO - Found 4 address suggestions for: Canley Vale 2166
+2025-01-15 04:00:35,929 - INFO - Starting business search with radius: 500 meters
+2025-01-15 04:00:35,930 - INFO - Searching businesses near place_id: EjRDYW5sZXkgVmFsZSBSb2FkLCBDYW5sZXkgSGVpZ2h0cyBOU1cgMjE2NiwgQXVzdHJhbGlhIi4qLAoUChIJa915_GiWEmsRTjJXxuhkgfsSFAoSCc9o6jFplhJrEYCvMhZofQEF
+2025-01-15 04:00:36,107 - INFO - Searching businesses within 500 meters radius
+2025-01-15 04:00:36,107 - INFO - Searching for restaurant businesses...
+2025-01-15 04:00:38,898 - INFO - Found 36 restaurant businesses
+2025-01-15 04:00:44,306 - INFO - Saved 36 businesses to cache: business_cache\EjRDYW5sZXkgVmFsZSBSb2FkLCBDYW5sZXkgSGVpZ2h0cyBOU1cgMjE2NiwgQXVzdHJhbGlhIi4qLAoUChIJa915_GiWEmsRTjJXxuhkgfsSFAoSCc9o6jFplhJrEYCvMhZofQEF_restaurant.json
+2025-01-15 04:00:45,307 - INFO - Found 36 businesses in total search
+2025-01-15 04:00:50,001 - INFO - Processed 36 businesses successfully
+2025-01-15 04:00:50,005 - INFO - Cached 36 business results
+2025-01-15 04:00:55,417 - INFO - Added 36 new businesses to businesses.json
+2025-01-15 04:00:55,417 - INFO - Total businesses in file: 36
+2025-01-15 04:00:57,310 - INFO - Starting detailed scraping of 36 businesses
