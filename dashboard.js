@@ -134,50 +134,80 @@ class Dashboard {
             return 0;
         });
 
-        this.businessContainer.innerHTML = filtered.map(b => {
-            // Debug: Check if required fields exist
-            if (!b.name || !b.address || !b.business_type || !b.opening_hours) {
-                this.log(`Warning: Business ${b.id} missing required fields`, 'warning');
+        // Safely render opening hours with error handling
+        const renderOpeningHours = (hours) => {
+            if (!hours) return '';
+            try {
+                return hours.split('\n').map(hour => `<div>${hour}</div>`).join('');
+            } catch (error) {
+                this.log(`Error rendering opening hours: ${error.message}`, 'error');
+                return '<div>Hours information unavailable</div>';
             }
-            
-            return `
-            <div class="business-card" data-id="${b.id}" onclick="dashboard.showBusinessDetails('${b.id}')">
-                <div class="business-header">
-                    <h3>${b.name || 'No Name'}</h3>
-                    <div class="business-tag">${(b.business_type || 'unknown').replace(/_/g, ' ')}</div>
-                </div>
-                <div class="business-info">
-                    <div class="info-row">
-                        <span class="info-label">Address:</span>
-                        <span class="info-value">${b.address || 'No Address'}</span>
-                    </div>
-                    ${b.latitude && b.longitude ? `
-                    <div class="info-row">
-                        <span class="info-label">Map:</span>
-                        <a href="https://www.google.com/maps/search/?api=1&query=${b.latitude},${b.longitude}" 
-                           target="_blank" 
-                           class="link">
-                            View on Map
-                        </a>
-                    </div>` : ''}
-                    ${b.phone ? `<div class="info-row">
-                        <span class="info-label">Phone:</span>
-                        <span class="info-value">${b.phone}</span>
-                    </div>` : ''}
-                    ${b.website ? `<div class="info-row">
-                        <span class="info-label">Website:</span>
-                        <a href="${b.website}" target="_blank" class="info-value link">Visit Website</a>
-                    </div>` : ''}
-                    ${b.opening_hours ? `
-                    <div class="info-row">
-                        <span class="info-label">Hours:</span>
-                        <div class="info-value">
-                            ${b.opening_hours.split('\n').map(hour => `<div>${hour}</div>`).join('')}
+        };
+
+        this.businessContainer.innerHTML = filtered.map(b => {
+            try {
+                // Safely access properties with fallbacks
+                const name = b.name || 'No Name';
+                const businessType = (b.business_type || 'unknown').replace(/_/g, ' ');
+                const address = b.address || 'No Address';
+                const hours = b.opening_hours ? renderOpeningHours(b.opening_hours) : '';
+                const id = b.id || `biz-${Math.random().toString(36).substr(2, 9)}`;
+
+                return `
+                    <div class="business-card" data-id="${id}" onclick="dashboard.showBusinessDetails('${id}')">
+                        <div class="business-header">
+                            <h3>${name}</h3>
+                            <div class="business-tag">${businessType}</div>
                         </div>
-                    </div>` : ''}
-                </div>
-            </div>
-            `).join('');
+                        <div class="business-info">
+                            <div class="info-row">
+                                <span class="info-label">Address:</span>
+                                <span class="info-value">${address}</span>
+                            </div>
+                            ${b.latitude && b.longitude ? `
+                            <div class="info-row">
+                                <span class="info-label">Map:</span>
+                                <a href="https://www.google.com/maps/search/?api=1&query=${b.latitude},${b.longitude}" 
+                                   target="_blank" 
+                                   class="link">
+                                    View on Map
+                                </a>
+                            </div>` : ''}
+                            ${b.phone ? `
+                            <div class="info-row">
+                                <span class="info-label">Phone:</span>
+                                <span class="info-value">${b.phone}</span>
+                            </div>` : ''}
+                            ${b.website ? `
+                            <div class="info-row">
+                                <span class="info-label">Website:</span>
+                                <a href="${b.website}" target="_blank" class="info-value link">Visit Website</a>
+                            </div>` : ''}
+                            ${hours ? `
+                            <div class="info-row">
+                                <span class="info-label">Hours:</span>
+                                <div class="info-value">
+                                    ${hours}
+                                </div>
+                            </div>` : ''}
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                this.log(`Error rendering business card: ${error.message}`, 'error');
+                return `
+                    <div class="business-card error">
+                        <div class="business-header">
+                            <h3>Error Rendering Business</h3>
+                        </div>
+                        <div class="business-info">
+                            <div class="info-row">Error loading business information</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }).join('');
         
         // Add click handler for business cards
         this.businessContainer.querySelectorAll('.business-card').forEach(card => {
