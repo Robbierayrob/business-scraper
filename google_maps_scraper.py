@@ -163,15 +163,59 @@ def main():
         print("Operation cancelled.")
         return
         
-    # Save to JSON with pretty formatting
+    # Add location metadata to each business
+    location_name = questionary.text(
+        "Enter a name for this location search (e.g., 'Sydney CBD'):"
+    ).ask()
+    
+    if not location_name:
+        print("Location name is required")
+        return
+        
+    # Add metadata to each business
+    for business in scraper.cached_results:
+        business['search_location'] = location_name
+        business['search_radius'] = f"{radius/1000}km"
+        business['search_date'] = datetime.now().isoformat()
+    
     output_file = 'businesses.json'
+    existing_data = []
+    
+    # Load existing data if file exists
+    if os.path.exists(output_file):
+        with open(output_file, 'r', encoding='utf-8') as f:
+            try:
+                existing_data = json.load(f)
+            except json.JSONDecodeError:
+                existing_data = []
+    
+    # Create set of existing business IDs (name + address)
+    existing_businesses = {
+        (b['name'], b['address']) for b in existing_data
+    }
+    
+    # Filter out duplicates
+    new_businesses = [
+        b for b in scraper.cached_results
+        if (b['name'], b['address']) not in existing_businesses
+    ]
+    
+    if not new_businesses:
+        print("\nNo new businesses found to add.")
+        return
+        
+    # Combine old and new data
+    combined_data = existing_data + new_businesses
+    
+    # Save combined data
     with open(output_file, 'w', encoding='utf-8') as f:
-        json.dump(scraper.cached_results, f, 
+        json.dump(combined_data, f, 
                  indent=2, 
                  ensure_ascii=False,
                  sort_keys=True)
     
-    print(f"\nResults saved to {output_file}")
+    print(f"\nAdded {len(new_businesses)} new businesses to {output_file}")
+    print(f"Total businesses in file: {len(combined_data)}")
     
     # Ask about scraping
     if questionary.confirm("Do you want to scrape these places?").ask():
