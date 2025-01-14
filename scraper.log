@@ -1408,3 +1408,21 @@ pip install python-multipart
 2025-01-15 04:21:05,728 - INFO - Found 280 businesses in total search
 2025-01-15 04:21:44,127 - INFO - Processed 280 businesses successfully
 2025-01-15 04:21:44,132 - INFO - Cached 280 business results
+2025-01-15 04:28:10,648 - INFO - Initializing GoogleMapsScraper
+2025-01-15 04:28:10,648 - INFO - API queries_quota: 60
+2025-01-15 04:28:40,166 - INFO - Initializing GoogleMapsScraper
+2025-01-15 04:28:40,166 - INFO - API queries_quota: 60
+2025-01-15 04:29:19,745 - INFO - Initializing GoogleMapsScraper
+2025-01-15 04:29:19,745 - INFO - API queries_quota: 60
+2025-01-15 04:30:15,666 - INFO - Initializing GoogleMapsScraper
+2025-01-15 04:30:15,667 - INFO - API queries_quota: 60
+2025-01-15 04:32:18,877 - INFO - Initializing GoogleMapsScraper
+2025-01-15 04:32:18,878 - INFO - API queries_quota: 60
+2025-01-15 04:32:37,192 - INFO - Initializing GoogleMapsScraper
+2025-01-15 04:32:37,193 - INFO - API queries_quota: 60
+2025-01-15 04:33:35,370 - INFO - Initializing GoogleMapsScraper
+2025-01-15 04:33:35,371 - INFO - API queries_quota: 60
+2025-01-15 04:35:28,742 - INFO - Initializing GoogleMapsScraper
+2025-01-15 04:35:28,742 - INFO - API queries_quota: 60
+2025-01-15 04:39:35,258 - INFO - Initializing GoogleMapsScraper
+2025-01-15 04:39:35,258 - INFO - API queries_quota: 60
