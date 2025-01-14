@@ -35,14 +35,18 @@ class Dashboard {
             }
             
             const data = await response.json();
-            this.log(`Successfully loaded ${data.length} businesses`);
+            
+            // Handle both array and object with data property
+            const businessesArray = Array.isArray(data) ? data : (data.data || []);
+            
+            this.log(`Successfully loaded ${businessesArray.length} businesses`);
                 
-                // Debug: Log first business structure
-                if (data.data.length > 0) {
-                    this.log(`First business data structure: ${JSON.stringify(data.data[0], null, 2)}`);
-                }
-                
-                this.businesses = data;
+            // Debug: Log first business structure
+            if (businessesArray.length > 0) {
+                this.log(`First business data structure: ${JSON.stringify(businessesArray[0], null, 2)}`);
+            }
+            
+            this.businesses = businessesArray;
                 
                 // Add unique IDs if missing
                 this.businesses = this.businesses.map((b, i) => {
@@ -74,9 +78,15 @@ class Dashboard {
     }
 
     setupEventListeners() {
-        this.searchBtn.addEventListener('click', () => this.handleSearch());
-        this.sortSelect.addEventListener('change', () => this.renderBusinesses());
-        this.filterInput.addEventListener('input', () => this.renderBusinesses());
+        if (this.searchBtn) {
+            this.searchBtn.addEventListener('click', () => this.handleSearch());
+        }
+        if (this.sortSelect) {
+            this.sortSelect.addEventListener('change', () => this.renderBusinesses());
+        }
+        if (this.filterInput) {
+            this.filterInput.addEventListener('input', () => this.renderBusinesses());
+        }
         
         // Console toggle
         this.consoleToggle.addEventListener('click', () => {
