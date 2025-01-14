@@ -92,11 +92,23 @@ class GoogleMapsScraper:
         logger.info("Searching businesses within %d meters radius", radius)
         # Track nearby search request
         self.request_count['nearby_search'] += 1
+        all_results = []
         places_result = self.gmaps.places_nearby(
             location=f"{location['lat']},{location['lng']}",
             radius=radius,
             type=business_type
         )
+        all_results.extend(places_result['results'])
+        
+        # Get additional pages if available
+        while 'next_page_token' in places_result:
+            time.sleep(2)  # Required delay for next_page_token
+            places_result = self.gmaps.places_nearby(
+                page_token=places_result['next_page_token']
+            )
+            all_results.extend(places_result['results'])
+            if len(all_results) >= 60:  # Max 60 results
+                break
         
         logger.info("Found %d businesses in initial search", len(places_result['results']))
         results = []
@@ -334,11 +346,16 @@ def main():
     # Calculate and display API costs
     cost_estimate = scraper.calculate_cost()
     print(f"\nAdded {len(new_businesses)} new businesses to {output_file}")
+    print(f"Previously had {len(existing_data)} businesses")
     print(f"Total businesses in file: {len(combined_data)}")
     print("\nAPI Usage and Cost Estimate:")
     print(f"  Nearby Searches: {cost_estimate['nearby_search']['count']} requests")
     print(f"  Place Details: {cost_estimate['place_details']['count']} requests")
     print(f"  Estimated Cost: ${cost_estimate['total_cost']:.4f}")
+    
+    # Calculate scraping costs
+    scrape_cost = len(scraper.cached_results) * self.PRICING['place_details']['advanced']
+    print(f"\nScraping {len(scraper.cached_results)} businesses would cost ~${scrape_cost:.4f}")
     
     # Ask about scraping
     if input("Do you want to scrape these places? (y/n): ").lower() == 'y':
