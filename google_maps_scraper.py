@@ -139,10 +139,9 @@ def main():
     if not radius:
         return
         
-    # Get business type
-    business_type = questionary.text(
-        "Enter business type (restaurant, cafe, etc) or leave blank:"
-    ).ask()
+    # Search all business types
+    business_type = None
+    print("\nSearching all business types...")
     
     # Perform search
     results = scraper.search_businesses(
@@ -154,13 +153,25 @@ def main():
     # Save results to memory
     scraper.cached_results = results.to_dict('records')
     
-    # Show results count
-    print(f"\nFound {len(scraper.cached_results)} businesses")
+    # Show confirmation list
+    print("\nFound these businesses:")
+    for i, business in enumerate(scraper.cached_results, 1):
+        print(f"{i}. {business['name']} - {business['address']}")
     
-    # Save to JSON
-    with open('businesses.json', 'w') as f:
-        json.dump(scraper.cached_results, f, indent=2)
-    print("Results saved to businesses.json")
+    # Confirm before saving
+    if not questionary.confirm(f"\nSave {len(scraper.cached_results)} businesses to JSON?").ask():
+        print("Operation cancelled.")
+        return
+        
+    # Save to JSON with pretty formatting
+    output_file = 'businesses.json'
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(scraper.cached_results, f, 
+                 indent=2, 
+                 ensure_ascii=False,
+                 sort_keys=True)
+    
+    print(f"\nResults saved to {output_file}")
     
     # Ask about scraping
     if questionary.confirm("Do you want to scrape these places?").ask():
