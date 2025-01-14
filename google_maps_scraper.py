@@ -259,6 +259,44 @@ class GoogleMapsScraper:
             'total_cost': total_cost
         }
 
+    def process_business(self, place):
+        """Process raw business data from Google Maps API"""
+        try:
+            # Get place details
+            place_details = self.gmaps.place(
+                place['place_id'],
+                fields=['name', 'formatted_address', 'formatted_phone_number',
+                       'website', 'opening_hours', 'business_status',
+                       'wheelchair_accessible_entrance']
+            )
+            
+            # Extract email if available
+            website = place_details['result'].get('website', '')
+            email = self.extract_email(website) if website else ''
+            
+            # Prepare business data
+            business_data = {
+                'name': place_details['result'].get('name'),
+                'address': place_details['result'].get('formatted_address'),
+                'phone': place_details['result'].get('formatted_phone_number'),
+                'website': website,
+                'email': email,
+                'opening_hours': self.format_opening_hours(
+                    place_details['result'].get('opening_hours', {})
+                ),
+                'business_type': place.get('types', ['unknown'])[0],
+                'accessibility': place_details['result'].get(
+                    'wheelchair_accessible_entrance', False
+                ),
+                'place_id': place['place_id'],
+                'latitude': place['geometry']['location']['lat'],
+                'longitude': place['geometry']['location']['lng']
+            }
+            return business_data
+        except Exception as e:
+            logger.error(f"Error processing business {place.get('name')}: {str(e)}")
+            return None
+
     def format_opening_hours(self, opening_hours):
         """Format opening hours into readable string"""
         if not opening_hours:
