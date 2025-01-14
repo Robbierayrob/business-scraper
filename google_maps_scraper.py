@@ -466,17 +466,9 @@ def main():
         print("Operation cancelled.")
         return
         
-    # Add location metadata to each business
-    location_name = input("Enter a name for this location search (e.g., 'Sydney CBD'): ")
-    
-    if not location_name:
-        logger.warning("No location name provided by user")
-        print("Location name is required")
-        return
-        
     # Add metadata to each business
     for business in scraper.cached_results:
-        business['search_location'] = location_name
+        business['search_location'] = address  # Use the original search address
         business['search_radius'] = f"{radius/1000}km"
         business['search_date'] = datetime.now().isoformat()
     
