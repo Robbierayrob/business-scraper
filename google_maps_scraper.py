@@ -193,39 +193,48 @@ class GoogleMapsScraper:
         for i, place in enumerate(all_results, 1):
             logger.debug("Processing business %d/%d: %s", i, len(places_result['results']), place.get('name'))
             logger.debug("Fetching details for place_id: %s", place['place_id'])
-            # Get place details
-            # Track place details request
-            self.request_count['place_details'] += 1
-            place_details = self.gmaps.place(
-                place['place_id'],
-                fields=['name', 'formatted_address', 'formatted_phone_number',
-                       'website', 'opening_hours', 'business_status',
-                       'wheelchair_accessible_entrance']
-            )
-            
-            # Extract email if available
-            website = place_details['result'].get('website', '')
-            email = self.extract_email(website) if website else ''
-            
-            logger.debug("Preparing business data for: %s", place_details['result'].get('name'))
-            # Prepare business data
-            business_data = {
-                'name': place_details['result'].get('name'),
-                'address': place_details['result'].get('formatted_address'),
-                'phone': place_details['result'].get('formatted_phone_number'),
-                'website': website,
-                'email': email,
-                'opening_hours': self.format_opening_hours(
-                    place_details['result'].get('opening_hours', {})
-                ),
-                'business_type': place.get('types', ['unknown'])[0],
-                'accessibility': place_details['result'].get(
-                    'wheelchair_accessible_entrance', False
-                ),
-                'place_id': place['place_id'],  # Add place_id to results
-                'latitude': place['geometry']['location']['lat'],
-                'longitude': place['geometry']['location']['lng']
-            }
+            try:
+                # Get place details
+                # Track place details request
+                self.request_count['place_details'] += 1
+                place_details = self.gmaps.place(
+                    place['place_id'],
+                    fields=['name', 'formatted_address', 'formatted_phone_number',
+                           'website', 'opening_hours', 'business_status',
+                           'wheelchair_accessible_entrance']
+                )
+                
+                # Extract email if available
+                website = place_details['result'].get('website', '')
+                email = self.extract_email(website) if website else ''
+                
+                logger.debug("Preparing business data for: %s", place_details['result'].get('name'))
+                
+                # Safely get geometry data
+                lat = place.get('geometry', {}).get('location', {}).get('lat', 0)
+                lng = place.get('geometry', {}).get('location', {}).get('lng', 0)
+                
+                # Prepare business data
+                business_data = {
+                    'name': place_details['result'].get('name'),
+                    'address': place_details['result'].get('formatted_address'),
+                    'phone': place_details['result'].get('formatted_phone_number'),
+                    'website': website,
+                    'email': email,
+                    'opening_hours': self.format_opening_hours(
+                        place_details['result'].get('opening_hours', {})
+                    ),
+                    'business_type': place.get('types', ['unknown'])[0],
+                    'accessibility': place_details['result'].get(
+                        'wheelchair_accessible_entrance', False
+                    ),
+                    'place_id': place['place_id'],
+                    'latitude': lat,
+                    'longitude': lng
+                }
+            except Exception as e:
+                logger.error(f"Error processing business {place.get('name')}: {str(e)}")
+                continue
             results.append(business_data)
             
         logger.info("Processed %d businesses successfully", len(results))
