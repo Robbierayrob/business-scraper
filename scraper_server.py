@@ -27,8 +27,18 @@ if not API_KEY:
     raise ValueError("GOOGLE_MAPS_API_KEY not found in .env file")
 scraper = GoogleMapsScraper(API_KEY)
 
+@app.post("/validate-address")
+async def validate_address(address: str):
+    try:
+        suggestions = scraper.validate_address(address)
+        if not suggestions:
+            raise HTTPException(status_code=400, detail="No matching addresses found")
+        return suggestions
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.post("/search")
-async def search_businesses(address: str, radius: int = 2500):
+async def search_businesses(place_id: str, radius: int = 2500, business_types: list = None):
     try:
         # Validate address and get place_id
         place_id = scraper.validate_address(address)
@@ -36,7 +46,7 @@ async def search_businesses(address: str, radius: int = 2500):
             raise HTTPException(status_code=400, detail="Invalid address")
         
         # Search businesses
-        results = scraper.search_businesses(place_id, radius)
+        results = scraper.search_businesses(place_id, radius, business_types)
         
         # Add metadata
         businesses = results.to_dict('records')

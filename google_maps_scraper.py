@@ -58,29 +58,12 @@ class GoogleMapsScraper:
             return None
             
         logger.info("Found %d address suggestions for: %s", len(autocomplete), address)
-        print("\nPlease select the correct address:")
-        for i, result in enumerate(autocomplete, 1):
-            print(f"{i}. {result['description']}")
         
-        while True:
-            try:
-                choice = int(input("Enter number: "))
-                if 1 <= choice <= len(autocomplete):
-                    selected = autocomplete[choice-1]['description']
-                    break
-                print("Invalid choice, try again")
-            except ValueError:
-                print("Please enter a number")
-        
-        if not selected:
-            logger.warning("No address selected by user")
-            return None
-            
-        logger.info("User selected address: %s", selected)
-            
-        # Get the place details for the selected address
-        place = next((p for p in autocomplete if p['description'] == selected), None)
-        return place['place_id']
+        # Return all suggestions - client will handle selection
+        return [{
+            'description': r['description'],
+            'place_id': r['place_id']
+        } for r in autocomplete]
         
     # Common business types from Google Places API
     BUSINESS_TYPES = [

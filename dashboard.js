@@ -49,6 +49,47 @@ class Dashboard {
         const query = document.getElementById('search-input').value;
         this.log(`Searching for: ${query}`);
         
+        // First get address suggestions
+        const addressResponse = await fetch('http://localhost:8000/validate-address', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                address: query
+            })
+        });
+        
+        const addressData = await addressResponse.json();
+        if (!addressData || addressData.length === 0) {
+            this.log("No matching addresses found", 'error');
+            return;
+        }
+        
+        // Show address selection
+        const addressChoices = addressData.map((a, i) => `${i + 1}. ${a.description}`).join('\n');
+        const selectedIndex = prompt(`Select address:\n${addressChoices}\nEnter number:`) - 1;
+        
+        if (isNaN(selectedIndex) || selectedIndex < 0 || selectedIndex >= addressData.length) {
+            this.log("Invalid address selection", 'error');
+            return;
+        }
+        
+        const selectedAddress = addressData[selectedIndex];
+        
+        // Show radius selection
+        const radius = prompt("Enter search radius in meters (default 2500):", "2500") || 2500;
+        if (isNaN(radius) || radius < 0) {
+            this.log("Invalid radius entered", 'error');
+            return;
+        }
+
+        // Show business type selection
+        const businessTypes = prompt("Enter business types to search (comma separated, leave blank for all):");
+        const typesArray = businessTypes ? 
+            businessTypes.split(',').map(t => t.trim()) : 
+            null;
+
         try {
             const response = await fetch('http://localhost:8000/search', {
                 method: 'POST',
@@ -57,7 +98,8 @@ class Dashboard {
                 },
                 body: JSON.stringify({
                     address: query,
-                    radius: 2500
+                    radius: parseInt(radius),
+                    business_types: typesArray
                 })
             });
             
@@ -66,6 +108,13 @@ class Dashboard {
                 this.businesses = data.data;
                 this.renderBusinesses();
                 this.log(`Found ${data.count} businesses`);
+                
+                // Keep console open
+                const consoleEl = document.querySelector('.console');
+                if (!consoleEl.classList.contains('open')) {
+                    consoleEl.classList.add('open');
+                    this.consoleToggle.textContent = 'Hide Log';
+                }
             } else {
                 throw new Error('Search failed');
             }
