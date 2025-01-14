@@ -115,25 +115,57 @@ class GoogleMapsScraper:
                 logger.error(f"Error reading cache file {cache_file}: {str(e)}")
         return None
 
-    def save_businesses_to_cache(self, place_id, business_type, businesses):
-        """Save businesses to cache file"""
-        cache_file = self.get_cache_file_path(place_id, business_type)
-        try:
-            with open(cache_file, 'w', encoding='utf-8') as f:
-                json.dump(businesses, f, ensure_ascii=False, indent=2)
-            logger.info(f"Saved {len(businesses)} businesses to cache: {cache_file}")
-        except Exception as e:
-            logger.error(f"Error saving to cache file {cache_file}: {str(e)}")
+    def save_businesses_to_json(self, businesses):
+        """Save businesses to main JSON file"""
+        output_file = 'businesses.json'
+        existing_data = []
+        
+        # Load existing data if file exists
+        if os.path.exists(output_file):
+            logger.info("Found existing output file: %s", output_file)
+            with open(output_file, 'r', encoding='utf-8') as f:
+                try:
+                    existing_data = json.load(f)
+                    logger.debug("Loaded %d existing records", len(existing_data))
+                except json.JSONDecodeError as e:
+                    logger.error("Error reading JSON file: %s", str(e))
+                    existing_data = []
+        
+        # Create set of existing business IDs (name + address)
+        existing_businesses = {
+            (b['name'], b['address']) for b in existing_data
+        }
+        
+        # Filter out duplicates
+        new_businesses = [
+            b for b in businesses
+            if (b['name'], b['address']) not in existing_businesses
+        ]
+        
+        if not new_businesses:
+            logger.info("No new businesses to add - all found businesses already exist")
+            return
+        
+        # Combine old and new data
+        combined_data = existing_data + new_businesses
+        
+        # Save combined data
+        with open(output_file, 'w', encoding='utf-8') as f:
+            json.dump(combined_data, f, 
+                     indent=2, 
+                     ensure_ascii=False,
+                     sort_keys=True)
+        
+        logger.info("Added %d new businesses to %s", len(new_businesses), output_file)
+        logger.info("Total businesses in file: %d", len(combined_data))
 
-    def search_businesses(self, place_id, radius=2500, business_types=None, use_cache=True):
+    def search_businesses(self, place_id, radius=2500, business_types=None):
         """Search for businesses in a specific location by type(s)
         
         Args:
             place_id: Google Maps place ID
             radius: Search radius in meters
             business_types: List of business types to search for (from BUSINESS_TYPES)
-            use_cache: Whether to use cached results if available
-                      Set to False to force fresh API search
         """
         logger.info("Searching businesses near place_id: %s", place_id)
         if business_types is None:
@@ -148,19 +180,6 @@ class GoogleMapsScraper:
                 logger.error("No valid business types provided")
                 return pd.DataFrame()
             
-        # Check if we have fresh cached results (less than 1 day old)
-        if use_cache:
-            for business_type in business_types:
-                cache_file = self.get_cache_file_path(place_id, business_type)
-                if os.path.exists(cache_file):
-                    file_age = time.time() - os.path.getmtime(cache_file)
-                    if file_age < 86400:  # 1 day in seconds
-                        logger.info("Using cached results from today for %s", business_type)
-                        cached = self.load_cached_businesses(place_id, business_type)
-                        if cached:
-                            return pd.DataFrame(cached)
-                    else:
-                        logger.info("Cached results are older than 1 day - refreshing")
         # Get the location coordinates from place_id
         place_details = self.gmaps.place(place_id, fields=['geometry'])
         location = place_details['result']['geometry']['location']
@@ -217,8 +236,8 @@ class GoogleMapsScraper:
                             logger.error(f"Error processing business {place.get('name')}: {str(e)}")
                     
                     if processed_results:
-                        # Save to cache
-                        self.save_businesses_to_cache(place_id, business_type, processed_results)
+                        # Save results to main JSON file
+                        self.save_businesses_to_json(processed_results)
                         all_results.extend(processed_results)
                 
                 # Avoid hitting API rate limits
@@ -584,7 +603,6 @@ def main():
             place_id=place_id,
             radius=radius,
             business_types=business_types,
-            use_cache=False  # Force fresh search
         )
     except Exception as e:
         logger.error(f"Error searching restaurants: {str(e)}")
