@@ -177,7 +177,7 @@ class Dashboard {
                     </div>` : ''}
                 </div>
             </div>
-        `).join('');
+            `).join('');
         
         // Add click handler for business cards
         this.businessContainer.querySelectorAll('.business-card').forEach(card => {
