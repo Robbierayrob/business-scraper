@@ -45,84 +45,6 @@ class Dashboard {
         }
     }
 
-    async handleSearch() {
-        const query = document.getElementById('search-input').value;
-        this.log(`Searching for: ${query}`);
-        
-        // First get address suggestions
-        const addressResponse = await fetch('http://localhost:8000/validate-address', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                address: query
-            })
-        });
-        
-        const addressData = await addressResponse.json();
-        if (!addressData || addressData.length === 0) {
-            this.log("No matching addresses found", 'error');
-            return;
-        }
-        
-        // Show address selection
-        const addressChoices = addressData.map((a, i) => `${i + 1}. ${a.description}`).join('\n');
-        const selectedIndex = prompt(`Select address:\n${addressChoices}\nEnter number:`) - 1;
-        
-        if (isNaN(selectedIndex) || selectedIndex < 0 || selectedIndex >= addressData.length) {
-            this.log("Invalid address selection", 'error');
-            return;
-        }
-        
-        const selectedAddress = addressData[selectedIndex];
-        
-        // Show radius selection
-        const radius = prompt("Enter search radius in meters (default 2500):", "2500") || 2500;
-        if (isNaN(radius) || radius < 0) {
-            this.log("Invalid radius entered", 'error');
-            return;
-        }
-
-        // Show business type selection
-        const businessTypes = prompt("Enter business types to search (comma separated, leave blank for all):");
-        const typesArray = businessTypes ? 
-            businessTypes.split(',').map(t => t.trim()) : 
-            null;
-
-        try {
-            const response = await fetch('http://localhost:8000/search', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    address: query,
-                    radius: parseInt(radius),
-                    business_types: typesArray
-                })
-            });
-            
-            const data = await response.json();
-            if (data.status === 'success') {
-                this.businesses = data.data;
-                this.renderBusinesses();
-                this.log(`Found ${data.count} businesses`);
-                
-                // Keep console open
-                const consoleEl = document.querySelector('.console');
-                if (!consoleEl.classList.contains('open')) {
-                    consoleEl.classList.add('open');
-                    this.consoleToggle.textContent = 'Hide Log';
-                }
-            } else {
-                throw new Error('Search failed');
-            }
-        } catch (error) {
-            this.log(`Error searching: ${error.message}`, 'error');
-        }
-    }
-
     setupEventListeners() {
         this.searchBtn.addEventListener('click', () => this.handleSearch());
         this.sortSelect.addEventListener('change', () => this.renderBusinesses());
@@ -168,10 +90,30 @@ class Dashboard {
 
         this.businessContainer.innerHTML = filtered.map(b => `
             <div class="business-card" data-id="${b.id}" onclick="dashboard.showBusinessDetails('${b.id}')">
-                <h3>${b.name}</h3>
-                <div class="business-tag">${b.business_type}</div>
-                <p class="text-sm text-gray-600">${b.address}</p>
-                <p class="text-xs text-gray-500 mt-2">Added: ${new Date(b.search_date).toLocaleDateString()}</p>
+                <div class="business-header">
+                    <h3>${b.name}</h3>
+                    <div class="business-tag">${b.business_type.replace(/_/g, ' ')}</div>
+                </div>
+                <div class="business-info">
+                    <div class="info-row">
+                        <span class="info-label">Address:</span>
+                        <span class="info-value">${b.address}</span>
+                    </div>
+                    ${b.phone ? `<div class="info-row">
+                        <span class="info-label">Phone:</span>
+                        <span class="info-value">${b.phone}</span>
+                    </div>` : ''}
+                    ${b.website ? `<div class="info-row">
+                        <span class="info-label">Website:</span>
+                        <a href="${b.website}" target="_blank" class="info-value link">Visit Website</a>
+                    </div>` : ''}
+                    <div class="info-row">
+                        <span class="info-label">Hours:</span>
+                        <div class="info-value">
+                            ${b.opening_hours.split('\n').map(hour => `<div>${hour}</div>`).join('')}
+                        </div>
+                    </div>
+                </div>
             </div>
         `).join('');
         
@@ -193,25 +135,41 @@ class Dashboard {
             <div class="sidebar-content">
                 <h2 class="text-xl font-semibold mb-4">${business.name}</h2>
                 <div class="space-y-4">
-                    <div>
-                        <h3 class="font-medium">Business Type</h3>
-                        <p class="text-gray-600">${business.business_type}</p>
+                    <div class="info-section">
+                        <h3 class="section-title">Location</h3>
+                        <div class="info-content">
+                            <p>${business.address}</p>
+                            <div class="map-link">
+                                <a href="https://www.google.com/maps/search/?api=1&query=${business.latitude},${business.longitude}" 
+                                   target="_blank" 
+                                   class="link">
+                                    View on Google Maps
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h3 class="font-medium">Address</h3>
-                        <p class="text-gray-600">${business.address}</p>
+                    
+                    <div class="info-section">
+                        <h3 class="section-title">Contact</h3>
+                        <div class="info-content">
+                            ${business.phone ? `<p>Phone: ${business.phone}</p>` : ''}
+                            ${business.email ? `<p>Email: ${business.email}</p>` : ''}
+                            ${business.website ? `
+                                <p>Website: 
+                                    <a href="${business.website}" target="_blank" class="link">
+                                        ${business.website}
+                                    </a>
+                                </p>` : ''}
+                        </div>
                     </div>
-                    <div>
-                        <h3 class="font-medium">Contact</h3>
-                        <p class="text-gray-600">${business.phone || 'Not available'}</p>
-                    </div>
-                    <div>
-                        <h3 class="font-medium">Website</h3>
-                        <p class="text-gray-600">${business.website || 'Not available'}</p>
-                    </div>
-                    <div>
-                        <h3 class="font-medium">Added On</h3>
-                        <p class="text-gray-600">${new Date(business.search_date).toLocaleDateString()}</p>
+                    
+                    <div class="info-section">
+                        <h3 class="section-title">Opening Hours</h3>
+                        <div class="info-content">
+                            ${business.opening_hours.split('\n').map(hour => `
+                                <div class="hour-row">${hour}</div>
+                            `).join('')}
+                        </div>
                     </div>
                 </div>
             </div>
