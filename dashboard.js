@@ -155,13 +155,12 @@ class Dashboard {
                 const id = b.id || `biz-${Math.random().toString(36).substr(2, 9)}`;
 
                 return `
-                    <div class="business-card" data-id="${id}">
+                    <div class="business-card" data-id="${id}" onclick="dashboard.showBusinessDetails('${id}')">
                         <div class="business-header">
-                            <h3 class="text-xl font-semibold text-gray-800">${name}</h3>
-                            <div class="business-tag bg-blue-50 text-blue-700">${businessType}</div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">${name}</h3>
+                            <div class="business-tag bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm">${businessType}</div>
                         </div>
-                        <div class="business-card-content">
-                            <div class="space-y-4">
+                        <div class="space-y-4">
                                 <div class="info-section">
                                     <div class="info-label text-sm font-medium text-gray-500 mb-1">Address</div>
                                     <div class="info-value text-gray-700">${address}</div>
