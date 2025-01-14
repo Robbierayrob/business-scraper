@@ -116,10 +116,15 @@ class GoogleMapsScraper:
         return None
 
     def save_businesses_to_json(self, businesses):
-        """Save businesses to main JSON file"""
+        """Save businesses to main JSON file with timestamp"""
         output_file = 'businesses.json'
         existing_data = []
         
+        # Add timestamp to new businesses
+        timestamp = datetime.now().isoformat()
+        for business in businesses:
+            business['last_updated'] = timestamp
+            
         # Load existing data if file exists
         if os.path.exists(output_file):
             logger.info("Found existing output file: %s", output_file)
@@ -640,17 +645,8 @@ def main():
     scraper.cached_results = results.to_dict('records')
     logger.info("Cached %d business results", len(scraper.cached_results))
     
-    # Show confirmation list
-    print("\nFound these businesses:")
-    for i, business in enumerate(scraper.cached_results, 1):
-        safe_print(f"{i}. {business['name']} - {business['address']}")
-    
-    # Confirm before saving
-    confirm = input(f"\nSave {len(scraper.cached_results)} businesses to JSON? (y/n): ").lower()
-    if confirm != 'y':
-        logger.info("User cancelled operation")
-        print("Operation cancelled.")
-        return
+    # Automatically save results without confirmation
+    logger.info("Automatically saving results to JSON")
         
     # Add metadata to each business
     for business in scraper.cached_results:
@@ -714,11 +710,10 @@ def main():
     scrape_cost = len(scraper.cached_results) * scraper.PRICING['place_details']['advanced']
     print(f"\nScraping {len(scraper.cached_results)} businesses would cost ~${scrape_cost:.4f}")
     
-    # Scrape additional details automatically since we already have the data
-    logger.info("Starting detailed scraping of %d businesses", len(scraper.cached_results))
-    print("Scraping additional details...")
-    for i, business in enumerate(scraper.cached_results, 1):
-        logger.debug("Scraping business %d/%d: %s", i, len(scraper.cached_results), business['name'])
+    # Exit after final search
+    logger.info("Search completed successfully")
+    print(f"\nSearch completed. Found {len(scraper.cached_results)} businesses.")
+    print(f"Results saved to businesses.json with timestamp: {timestamp}")
             
 if __name__ == "__main__":
     main()
