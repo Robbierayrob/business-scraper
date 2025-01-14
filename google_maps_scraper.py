@@ -169,9 +169,63 @@ class GoogleMapsScraper:
         logger.info("Searching businesses within %d meters radius", radius)
         all_results = []
         
-        # Search each business type individually
-        for business_type in business_types:
-            logger.info("Searching for %s businesses...", business_type)
+        # Handle "all" search
+        if 'all' in business_types:
+            logger.info("Searching for all business types...")
+            business_type = 'all'
+            
+            # Check cache first
+            if use_cache:
+                cache_file = self.get_cache_file_path(place_id, 'all')
+                if os.path.exists(cache_file):
+                    file_age = time.time() - os.path.getmtime(cache_file)
+                    if file_age < 86400:  # 1 day in seconds
+                        logger.info("Using cached results from today for all types")
+                        cached = self.load_cached_businesses(place_id, 'all')
+                        if cached:
+                            return pd.DataFrame(cached)
+                    else:
+                        logger.info("Cached results are older than 1 day - refreshing")
+            
+            # Search without type filter
+            self.request_count['nearby_search'] += 1
+            places_result = self.gmaps.places_nearby(
+                location=f"{location['lat']},{location['lng']}",
+                radius=radius
+            )
+            type_results = places_result['results']
+            
+            # Get additional pages if available
+            while 'next_page_token' in places_result and len(type_results) < 60:
+                time.sleep(2)  # Required delay for next_page_token
+                places_result = self.gmaps.places_nearby(
+                    page_token=places_result['next_page_token']
+                )
+                type_results.extend(places_result['results'])
+            
+            logger.info("Found %d businesses of all types", len(type_results))
+            
+            # Process and cache the results
+            if type_results:
+                processed_results = []
+                for place in type_results:
+                    try:
+                        # Mark as 'all' type
+                        place['search_type'] = 'all'
+                        business_data = self.process_business(place)
+                        if business_data:
+                            processed_results.append(business_data)
+                    except Exception as e:
+                        logger.error(f"Error processing business {place.get('name')}: {str(e)}")
+                
+                if processed_results:
+                    # Save to cache
+                    self.save_businesses_to_cache(place_id, 'all', processed_results)
+                    all_results.extend(processed_results)
+        else:
+            # Search each business type individually
+            for business_type in business_types:
+                logger.info("Searching for %s businesses...", business_type)
             
             # Check cache first
             if use_cache:
@@ -333,11 +387,21 @@ class GoogleMapsScraper:
             
             # Combine and deduplicate types
             all_types = list(set(search_types + place_types))
-            # Filter to only valid business types
-            business_types = [t for t in all_types if t in self.BUSINESS_TYPES]
+            
+            # If searching all types, keep all valid types
+            if 'all' in search_types:
+                business_types = [t for t in all_types if t in self.BUSINESS_TYPES]
+            else:
+                # Filter to only search types that match our selected types
+                business_types = [t for t in all_types if t in search_types]
             
             # Use the most specific type as primary
             business_type = self.get_primary_business_type(business_types)
+            
+            # If no types found, use first search type
+            if not business_types:
+                business_types = search_types
+                business_type = search_types[0]
             
             # Prepare business data
             business_data = {
@@ -481,11 +545,13 @@ def main():
         
     # Let user select business types
     print("\nAvailable business types:")
+    print("0. All business types")
     for i, biz_type in enumerate(scraper.BUSINESS_TYPES, 1):
         print(f"{i}. {biz_type}")
     
     print("\nEnter numbers of business types to search (comma separated):")
     print("Example: 1,2,3 for restaurant, cafe, bar")
+    print("Or enter 0 to search all business types")
     while True:
         try:
             choices = input("Your choices: ").strip()
@@ -494,6 +560,12 @@ def main():
                 break
                 
             selected_indices = [int(c.strip()) - 1 for c in choices.split(',')]
+            
+            # Handle "All" selection
+            if -1 in selected_indices:  # 0 becomes -1 after subtracting 1
+                business_types = scraper.BUSINESS_TYPES
+                break
+                
             business_types = [scraper.BUSINESS_TYPES[i] for i in selected_indices 
                             if 0 <= i < len(scraper.BUSINESS_TYPES)]
             if business_types:
