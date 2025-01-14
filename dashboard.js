@@ -135,14 +135,19 @@ class Dashboard {
         });
 
         // Safely render opening hours with error handling
-        const renderOpeningHours = (hours) => {
-            if (!hours) return '';
-            try {
-                return hours.split('\n').map(hour => `<div>${hour}</div>`).join('');
-            } catch (error) {
-                this.log(`Error rendering opening hours: ${error.message}`, 'error');
-                return '<div>Hours information unavailable</div>';
-            }
+        const businessTypeColors = {
+            'doctor': '#a78bfa',    // Purple
+            'physiotherapist': '#6ee7b7', // Green
+            'dentist': '#facc15',    // Yellow
+            'beauty salon': '#f472b6', // Pink
+            'bakery': '#fb923c',      // Orange
+            'bar': '#ef4444',        // Red
+            'home goods store': '#38bdf8', // Light Blue
+            'default': '#9ca3af'     // Gray
+        };
+
+        const getTagColor = (type) => {
+            return businessTypeColors[type] || businessTypeColors['default'];
         };
 
         this.businessContainer.innerHTML = filtered.map(b => {
@@ -151,14 +156,14 @@ class Dashboard {
                 const name = b.name || 'No Name';
                 const businessType = (b.business_type || 'unknown').replace(/_/g, ' ');
                 const address = b.address || 'No Address';
-                const hours = b.opening_hours ? renderOpeningHours(b.opening_hours) : '';
+                const tagColor = getTagColor(b.business_type);
                 const id = b.id || `biz-${Math.random().toString(36).substr(2, 9)}`;
 
                 return `
                     <div class="business-card" data-id="${id}" onclick="dashboard.showBusinessDetails('${id}')">
                         <div class="business-header">
                             <h3 class="text-xl font-semibold text-gray-800 mb-2">${name}</h3>
-                            <div class="business-tag bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm">${businessType}</div>
+                            <div class="business-tag" style="background-color: ${tagColor};">${businessType}</div>
                         </div>
                         <div class="space-y-4">
                                 <div class="info-section">
