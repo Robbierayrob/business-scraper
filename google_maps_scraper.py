@@ -5,6 +5,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 import logging
+import time  # Added for sleep()
 
 # Configure logging
 logging.basicConfig(
@@ -354,7 +355,7 @@ def main():
     print(f"  Estimated Cost: ${cost_estimate['total_cost']:.4f}")
     
     # Calculate scraping costs
-    scrape_cost = len(scraper.cached_results) * self.PRICING['place_details']['advanced']
+    scrape_cost = len(scraper.cached_results) * scraper.PRICING['place_details']['advanced']
     print(f"\nScraping {len(scraper.cached_results)} businesses would cost ~${scrape_cost:.4f}")
     
     # Ask about scraping
