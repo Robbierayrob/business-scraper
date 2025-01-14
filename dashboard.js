@@ -44,6 +44,13 @@ class Dashboard {
             }
 
             if (data.data && data.data.length > 0) {
+                this.log(`Received ${data.data.length} businesses from server`);
+                
+                // Debug: Log first business structure
+                if (data.data.length > 0) {
+                    this.log(`First business data structure: ${JSON.stringify(data.data[0], null, 2)}`);
+                }
+                
                 this.businesses = data.data;
                 
                 // Add unique IDs if missing
@@ -55,9 +62,20 @@ class Dashboard {
                 });
                 
                 this.log(`Loaded ${this.businesses.length} businesses`);
+                this.log(`First business after processing: ${JSON.stringify(this.businesses[0], null, 2)}`);
             } else {
                 this.log("No businesses found in the data file", 'warning');
                 this.businesses = [];
+            }
+            
+            // Debug: Check if businesses have required fields
+            if (this.businesses.length > 0) {
+                const requiredFields = ['name', 'address', 'business_type', 'opening_hours'];
+                const missingFields = requiredFields.filter(field => !(field in this.businesses[0]));
+                
+                if (missingFields.length > 0) {
+                    this.log(`Warning: Missing required fields in business data: ${missingFields.join(', ')}`, 'warning');
+                }
             }
         } catch (error) {
             this.log(`Error loading businesses: ${error.message}`, 'error');
@@ -93,13 +111,21 @@ class Dashboard {
     }
 
     renderBusinesses() {
+        this.log(`Rendering businesses (total: ${this.businesses.length})`);
+        
         const sortBy = this.sortSelect.value;
         const filter = this.filterInput.value.toLowerCase();
         
-        let filtered = this.businesses.filter(b => 
-            b.name.toLowerCase().includes(filter) ||
-            b.business_type.toLowerCase().includes(filter)
-        );
+        let filtered = this.businesses.filter(b => {
+            if (!b.name || !b.business_type) {
+                this.log(`Warning: Business missing required fields - name: ${b.name}, type: ${b.business_type}`, 'warning');
+                return false;
+            }
+            return b.name.toLowerCase().includes(filter) ||
+                   b.business_type.toLowerCase().includes(filter);
+        });
+
+        this.log(`Filtered to ${filtered.length} businesses matching "${filter}"`);
 
         filtered.sort((a, b) => {
             if (sortBy === 'name') return a.name.localeCompare(b.name);
@@ -108,7 +134,13 @@ class Dashboard {
             return 0;
         });
 
-        this.businessContainer.innerHTML = filtered.map(b => `
+        this.businessContainer.innerHTML = filtered.map(b => {
+            // Debug: Check if required fields exist
+            if (!b.name || !b.address || !b.business_type || !b.opening_hours) {
+                this.log(`Warning: Business ${b.id} missing required fields`, 'warning');
+            }
+            
+            return `
             <div class="business-card" data-id="${b.id}" onclick="dashboard.showBusinessDetails('${b.id}')">
                 <div class="business-header">
                     <h3>${b.name}</h3>
