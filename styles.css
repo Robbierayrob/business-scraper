@@ -9,8 +9,7 @@ body {
 .dashboard {
     max-width: 1600px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 400px;
+    padding-right: 400px; /* Make space for fixed sidebar */
     min-height: 100vh;
     background: linear-gradient(145deg, #f8fafc 0%, #ffffff 100%);
     box-shadow: 0 0 35px rgba(0,0,0,0.03);
@@ -211,11 +210,12 @@ button:hover {
     background: #ffffff;
     border-left: 1px solid #e2e8f0;
     padding: 2rem;
-    overflow-y: auto;
     box-shadow: -4px 0 6px rgba(0,0,0,0.02);
-    position: sticky;
+    position: fixed;
+    right: 0;
     top: 0;
-    height: 100vh;
+    bottom: 0;
+    width: 400px;
     overflow-y: auto;
 }
 
