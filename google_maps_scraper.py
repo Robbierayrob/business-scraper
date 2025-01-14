@@ -711,6 +711,7 @@ def main():
     print(f"\nScraping {len(scraper.cached_results)} businesses would cost ~${scrape_cost:.4f}")
     
     # Exit after final search
+    timestamp = datetime.now().isoformat()
     logger.info("Search completed successfully")
     print(f"\nSearch completed. Found {len(scraper.cached_results)} businesses.")
     print(f"Results saved to businesses.json with timestamp: {timestamp}")
