@@ -251,30 +251,35 @@ def main():
         logger.warning("No address provided by user")
         return
         
-    # Validate address
-    place_id = scraper.validate_address(address)
-    if not place_id:
+    # Validate address and let user select
+    suggestions = scraper.validate_address(address)
+    if not suggestions:
         logger.warning("No valid place_id obtained")
         return
         
-    print("\nSelect search radius:")
-    print("1. 2.5 km")
-    print("2. 5 km")
-    print("3. 10 km")
+    print("\nSelect address:")
+    for i, suggestion in enumerate(suggestions, 1):
+        print(f"{i}. {suggestion['description']}")
     
     while True:
         try:
-            choice = int(input("Enter number (1-3): "))
-            if choice == 1:
-                radius = 2500
-                break
-            elif choice == 2:
-                radius = 5000
-                break
-            elif choice == 3:
-                radius = 10000
+            choice = int(input("Enter number: ")) - 1
+            if 0 <= choice < len(suggestions):
+                selected = suggestions[choice]
+                place_id = selected['place_id']
                 break
             print("Invalid choice, try again")
+        except ValueError:
+            print("Please enter a number")
+
+    # Get custom radius
+    while True:
+        try:
+            radius_km = float(input("Enter search radius in kilometers (e.g. 2.5): "))
+            if radius_km > 0:
+                radius = int(radius_km * 1000)  # Convert km to meters
+                break
+            print("Radius must be greater than 0")
         except ValueError:
             print("Please enter a number")
     
@@ -288,16 +293,20 @@ def main():
     
     # Perform search in chunks to avoid timeout
     results = pd.DataFrame()
-    chunk_size = 10
+    chunk_size = 5  # Reduced chunk size to avoid API limits
     for i in range(0, len(scraper.BUSINESS_TYPES), chunk_size):
         types_chunk = scraper.BUSINESS_TYPES[i:i + chunk_size]
         print(f"\nSearching types: {', '.join(types_chunk)}")
         
-        chunk_results = scraper.search_businesses(
-            place_id=place_id,
-            radius=radius,
-            business_types=types_chunk
-        )
+        try:
+            chunk_results = scraper.search_businesses(
+                place_id=place_id,
+                radius=radius,
+                business_types=types_chunk
+            )
+        except Exception as e:
+            logger.error(f"Error searching types {types_chunk}: {str(e)}")
+            continue
         
         # Combine results while avoiding duplicates
         if not results.empty:
