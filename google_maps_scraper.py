@@ -5,7 +5,9 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 import logging
-import time  # Added for sleep()
+import time
+import uuid
+import sys
 
 # Configure logging
 logging.basicConfig(
@@ -44,6 +46,9 @@ class GoogleMapsScraper:
             'nearby_search': 0,
             'place_details': 0
         }
+        self.cache_dir = 'business_cache'
+        if not os.path.exists(self.cache_dir):
+            os.makedirs(self.cache_dir)
         logger.debug("Google Maps client initialized")
         
     def validate_address(self, address):
@@ -93,7 +98,34 @@ class GoogleMapsScraper:
         'veterinary_care', 'zoo'
     ]
 
-    def search_businesses(self, place_id, radius=2500, business_types=None):
+    def get_cache_file_path(self, place_id, business_type):
+        """Generate a cache file path based on place_id and business_type"""
+        safe_place_id = place_id.replace('/', '_')
+        safe_type = business_type.replace('/', '_')
+        return os.path.join(self.cache_dir, f"{safe_place_id}_{safe_type}.json")
+
+    def load_cached_businesses(self, place_id, business_type):
+        """Load cached businesses from file if they exist"""
+        cache_file = self.get_cache_file_path(place_id, business_type)
+        if os.path.exists(cache_file):
+            try:
+                with open(cache_file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except Exception as e:
+                logger.error(f"Error reading cache file {cache_file}: {str(e)}")
+        return None
+
+    def save_businesses_to_cache(self, place_id, business_type, businesses):
+        """Save businesses to cache file"""
+        cache_file = self.get_cache_file_path(place_id, business_type)
+        try:
+            with open(cache_file, 'w', encoding='utf-8') as f:
+                json.dump(businesses, f, ensure_ascii=False, indent=2)
+            logger.info(f"Saved {len(businesses)} businesses to cache: {cache_file}")
+        except Exception as e:
+            logger.error(f"Error saving to cache file {cache_file}: {str(e)}")
+
+    def search_businesses(self, place_id, radius=2500, business_types=None, use_cache=True):
         """Search for businesses in a specific location by type(s)"""
         logger.info("Searching businesses near place_id: %s", place_id)
         if business_types is None:
@@ -109,6 +141,14 @@ class GoogleMapsScraper:
         # Search each business type individually
         for business_type in business_types:
             logger.info("Searching for %s businesses...", business_type)
+            
+            # Check cache first
+            if use_cache:
+                cached = self.load_cached_businesses(place_id, business_type)
+                if cached is not None:
+                    logger.info(f"Loaded {len(cached)} {business_type} businesses from cache")
+                    all_results.extend(cached)
+                    continue
             
             # Track nearby search request
             self.request_count['nearby_search'] += 1
@@ -128,7 +168,22 @@ class GoogleMapsScraper:
                 type_results.extend(places_result['results'])
             
             logger.info("Found %d %s businesses", len(type_results), business_type)
-            all_results.extend(type_results)
+            
+            # Process and cache the results
+            if type_results:
+                processed_results = []
+                for place in type_results:
+                    try:
+                        business_data = self.process_business(place)
+                        if business_data:
+                            processed_results.append(business_data)
+                    except Exception as e:
+                        logger.error(f"Error processing business {place.get('name')}: {str(e)}")
+                
+                if processed_results:
+                    # Save to cache
+                    self.save_businesses_to_cache(place_id, business_type, processed_results)
+                    all_results.extend(processed_results)
             
             # Avoid hitting API rate limits
             time.sleep(1)
@@ -238,6 +293,13 @@ class GoogleMapsScraper:
             
         return '\n'.join(formatted_hours)
 
+def safe_print(text):
+    """Handle Unicode printing safely"""
+    try:
+        print(text)
+    except UnicodeEncodeError:
+        print(text.encode('ascii', 'replace').decode('ascii'))
+
 def main():
     logger.info("Starting Google Maps scraper")
     # Get API key from environment variables
@@ -245,6 +307,11 @@ def main():
     if not API_KEY:
         logger.error("GOOGLE_MAPS_API_KEY not found in .env file")
         raise ValueError("GOOGLE_MAPS_API_KEY not found in .env file")
+    
+    # Set up UTF-8 encoding for Windows
+    if sys.platform == 'win32':
+        import io
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
         
     scraper = GoogleMapsScraper(API_KEY)
     
@@ -330,7 +397,7 @@ def main():
     # Show confirmation list
     print("\nFound these businesses:")
     for i, business in enumerate(scraper.cached_results, 1):
-        print(f"{i}. {business['name']} - {business['address']}")
+        safe_print(f"{i}. {business['name']} - {business['address']}")
     
     # Confirm before saving
     confirm = input(f"\nSave {len(scraper.cached_results)} businesses to JSON? (y/n): ").lower()
