@@ -29,17 +29,22 @@ class Dashboard {
         try {
             const response = await fetch('http://localhost:8000/businesses');
             const data = await response.json();
-            this.businesses = data.data;
-            
-            // Add unique IDs if missing
-            this.businesses = this.businesses.map((b, i) => {
-                if (!b.id) {
-                    b.id = `biz-${i + 1}`;
-                }
-                return b;
-            });
-            
-            this.log(`Loaded ${this.businesses.length} businesses`);
+            if (data.data && data.data.length > 0) {
+                this.businesses = data.data;
+                
+                // Add unique IDs if missing
+                this.businesses = this.businesses.map((b, i) => {
+                    if (!b.id) {
+                        b.id = `biz-${i + 1}`;
+                    }
+                    return b;
+                });
+                
+                this.log(`Loaded ${this.businesses.length} businesses`);
+            } else {
+                this.log("No businesses found in the data file", 'warning');
+                this.businesses = [];
+            }
         } catch (error) {
             this.log(`Error loading businesses: ${error.message}`, 'error');
         }

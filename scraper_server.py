@@ -61,6 +61,11 @@ async def get_businesses():
     try:
         with open('businesses.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
+            
+        # Ensure data is in the correct format
+        if not isinstance(data, list):
+            data = [data]
+            
         return {
             "status": "success",
             "count": len(data),
@@ -69,6 +74,13 @@ async def get_businesses():
     except FileNotFoundError:
         return {
             "status": "success",
+            "count": 0,
+            "data": []
+        }
+    except json.JSONDecodeError as e:
+        return {
+            "status": "error",
+            "message": f"Invalid JSON format: {str(e)}",
             "count": 0,
             "data": []
         }
