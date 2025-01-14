@@ -21,10 +21,28 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 class GoogleMapsScraper:
+    # Pricing information from Google Places API docs
+    PRICING = {
+        'nearby_search': {
+            'basic': 32 / 1000,  # $32 per 1000 requests
+            'advanced': 35 / 1000,
+            'preferred': 40 / 1000
+        },
+        'place_details': {
+            'basic': 17 / 1000,  # $17 per 1000 requests
+            'advanced': 20 / 1000,
+            'preferred': 40 / 1000
+        }
+    }
+    
     def __init__(self, api_key):
         logger.info("Initializing GoogleMapsScraper")
         self.gmaps = googlemaps.Client(key=api_key)
         self.cached_results = []
+        self.request_count = {
+            'nearby_search': 0,
+            'place_details': 0
+        }
         logger.debug("Google Maps client initialized")
         
     def validate_address(self, address):
@@ -72,6 +90,8 @@ class GoogleMapsScraper:
         logger.debug("Location coordinates: lat=%s, lng=%s", location['lat'], location['lng'])
         
         logger.info("Searching businesses within %d meters radius", radius)
+        # Track nearby search request
+        self.request_count['nearby_search'] += 1
         places_result = self.gmaps.places_nearby(
             location=f"{location['lat']},{location['lng']}",
             radius=radius,
@@ -84,6 +104,8 @@ class GoogleMapsScraper:
             logger.debug("Processing business %d/%d: %s", i, len(places_result['results']), place.get('name'))
             logger.debug("Fetching details for place_id: %s", place['place_id'])
             # Get place details
+            # Track place details request
+            self.request_count['place_details'] += 1
             place_details = self.gmaps.place(
                 place['place_id'],
                 fields=['name', 'formatted_address', 'formatted_phone_number',
@@ -123,6 +145,27 @@ class GoogleMapsScraper:
         # or a dedicated email extraction service
         return ''
     
+    def calculate_cost(self):
+        """Calculate estimated API costs based on request counts"""
+        # Nearby search is considered "Basic" SKU
+        nearby_cost = self.request_count['nearby_search'] * self.PRICING['nearby_search']['basic']
+        
+        # Place details is considered "Advanced" SKU since we're requesting multiple fields
+        details_cost = self.request_count['place_details'] * self.PRICING['place_details']['advanced']
+        
+        total_cost = nearby_cost + details_cost
+        return {
+            'nearby_search': {
+                'count': self.request_count['nearby_search'],
+                'cost': nearby_cost
+            },
+            'place_details': {
+                'count': self.request_count['place_details'],
+                'cost': details_cost
+            },
+            'total_cost': total_cost
+        }
+
     def format_opening_hours(self, opening_hours):
         """Format opening hours into readable string"""
         if not opening_hours:
@@ -288,8 +331,14 @@ def main():
     
     logger.info("Added %d new businesses to %s", len(new_businesses), output_file)
     logger.info("Total businesses in file: %d", len(combined_data))
+    # Calculate and display API costs
+    cost_estimate = scraper.calculate_cost()
     print(f"\nAdded {len(new_businesses)} new businesses to {output_file}")
     print(f"Total businesses in file: {len(combined_data)}")
+    print("\nAPI Usage and Cost Estimate:")
+    print(f"  Nearby Searches: {cost_estimate['nearby_search']['count']} requests")
+    print(f"  Place Details: {cost_estimate['place_details']['count']} requests")
+    print(f"  Estimated Cost: ${cost_estimate['total_cost']:.4f}")
     
     # Ask about scraping
     if input("Do you want to scrape these places? (y/n): ").lower() == 'y':
