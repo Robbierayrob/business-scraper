@@ -4,7 +4,6 @@ import pandas as pd
 from datetime import datetime
 from dotenv import load_dotenv
 import os
-import questionary
 
 # Load environment variables from .env file
 load_dotenv()
@@ -25,11 +24,19 @@ class GoogleMapsScraper:
             print("No matching addresses found")
             return None
             
-        choices = [f"{result['description']}" for result in autocomplete]
-        selected = questionary.select(
-            "Please confirm the correct address:",
-            choices=choices
-        ).ask()
+        print("\nPlease select the correct address:")
+        for i, result in enumerate(autocomplete, 1):
+            print(f"{i}. {result['description']}")
+        
+        while True:
+            try:
+                choice = int(input("Enter number: "))
+                if 1 <= choice <= len(autocomplete):
+                    selected = autocomplete[choice-1]['description']
+                    break
+                print("Invalid choice, try again")
+            except ValueError:
+                print("Please enter a number")
         
         if not selected:
             return None
@@ -117,7 +124,7 @@ def main():
     scraper = GoogleMapsScraper(API_KEY)
     
     # Get address from user
-    address = questionary.text("Enter the town/address to search near:").ask()
+    address = input("Enter the town/address to search near: ")
     if not address:
         return
         
@@ -126,15 +133,26 @@ def main():
     if not place_id:
         return
         
-    # Get search radius
-    radius = questionary.select(
-        "Select search radius:",
-        choices=[
-            ("2.5 km", 2500),
-            ("5 km", 5000),
-            ("10 km", 10000)
-        ]
-    ).ask()
+    print("\nSelect search radius:")
+    print("1. 2.5 km")
+    print("2. 5 km")
+    print("3. 10 km")
+    
+    while True:
+        try:
+            choice = int(input("Enter number (1-3): "))
+            if choice == 1:
+                radius = 2500
+                break
+            elif choice == 2:
+                radius = 5000
+                break
+            elif choice == 3:
+                radius = 10000
+                break
+            print("Invalid choice, try again")
+        except ValueError:
+            print("Please enter a number")
     
     if not radius:
         return
@@ -159,14 +177,13 @@ def main():
         print(f"{i}. {business['name']} - {business['address']}")
     
     # Confirm before saving
-    if not questionary.confirm(f"\nSave {len(scraper.cached_results)} businesses to JSON?").ask():
+    confirm = input(f"\nSave {len(scraper.cached_results)} businesses to JSON? (y/n): ").lower()
+    if confirm != 'y':
         print("Operation cancelled.")
         return
         
     # Add location metadata to each business
-    location_name = questionary.text(
-        "Enter a name for this location search (e.g., 'Sydney CBD'):"
-    ).ask()
+    location_name = input("Enter a name for this location search (e.g., 'Sydney CBD'): ")
     
     if not location_name:
         print("Location name is required")
@@ -218,7 +235,7 @@ def main():
     print(f"Total businesses in file: {len(combined_data)}")
     
     # Ask about scraping
-    if questionary.confirm("Do you want to scrape these places?").ask():
+    if input("Do you want to scrape these places? (y/n): ").lower() == 'y':
         # Add scraping logic here
         print("Scraping additional details...")
         # You can access the cached results with place IDs
