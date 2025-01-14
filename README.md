@@ -106,4 +106,37 @@ Contributions are welcome! Please:
 ## 📄 License
 MIT License - See [LICENSE](LICENSE) for details
 
+## 📋 TODO: Additional Data Sources
+
+### Australian Business Data
+- [ ] ABN Lookup (https://abr.business.gov.au/)
+  - Scrape business details using ABN
+  - Verify business registration status
+  - Get GST registration information
+- [ ] ASIC Connect (https://connectonline.asic.gov.au/)
+  - Company registration details
+  - Officeholder information
+  - Business names registry
+- [ ] Australian Business Register
+  - Bulk data downloads
+  - Business location mapping
+- [ ] State-based business directories
+  - NSW Fair Trading
+  - Victorian Business Licence Finder
+  - QLD Business and Industry Portal
+
+### International Business Data
+- [ ] LinkedIn Company Pages
+- [ ] Crunchbase
+- [ ] Yellow Pages Australia
+- [ ] TrueLocal
+- [ ] Industry-specific directories
+
+### Features to Add
+- [ ] Data enrichment from multiple sources
+- [ ] Automated data validation
+- [ ] Bulk ABN lookup integration
+- [ ] Business health scoring
+- [ ] Competitor analysis tools
+
 > **Note:** This project uses Google Maps API which may incur costs. Please monitor your API usage.
