@@ -160,15 +160,6 @@ class Dashboard {
                             View on Map
                         </a>
                     </div>` : ''}
-                    ${b.latitude && b.longitude ? `
-                    <div class="info-row">
-                        <span class="info-label">Map:</span>
-                        <a href="https://www.google.com/maps/search/?api=1&query=${b.latitude},${b.longitude}" 
-                           target="_blank" 
-                           class="link">
-                            View on Map
-                        </a>
-                    </div>` : ''}
                     ${b.phone ? `<div class="info-row">
                         <span class="info-label">Phone:</span>
                         <span class="info-value">${b.phone}</span>
@@ -177,12 +168,13 @@ class Dashboard {
                         <span class="info-label">Website:</span>
                         <a href="${b.website}" target="_blank" class="info-value link">Visit Website</a>
                     </div>` : ''}
+                    ${b.opening_hours ? `
                     <div class="info-row">
                         <span class="info-label">Hours:</span>
                         <div class="info-value">
                             ${b.opening_hours.split('\n').map(hour => `<div>${hour}</div>`).join('')}
                         </div>
-                    </div>
+                    </div>` : ''}
                 </div>
             </div>
         `).join('');
@@ -245,6 +237,7 @@ class Dashboard {
                         </div>
                     </div>
                     
+                    ${business.opening_hours ? `
                     <div class="info-section">
                         <h3 class="section-title">Opening Hours</h3>
                         <div class="info-content">
@@ -252,7 +245,7 @@ class Dashboard {
                                 <div class="hour-row">${hour}</div>
                             `).join('')}
                         </div>
-                    </div>
+                    </div>` : ''}
                 </div>
             </div>
         `;
