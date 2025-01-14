@@ -96,14 +96,48 @@ button:hover {
 .business-card {
     background: white;
     padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     transition: all 0.2s ease;
     cursor: pointer;
     border: 1px solid #e2e8f0;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    height: 400px;
+    overflow: hidden;
+}
+
+.business-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    border-color: #93c5fd;
+}
+
+.business-card-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin-right: -0.5rem;
+}
+
+/* Custom scrollbar */
+.business-card-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.business-card-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.business-card-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.business-card-content::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
 }
 
 .business-header {

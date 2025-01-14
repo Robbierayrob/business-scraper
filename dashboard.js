@@ -155,42 +155,59 @@ class Dashboard {
                 const id = b.id || `biz-${Math.random().toString(36).substr(2, 9)}`;
 
                 return `
-                    <div class="business-card" data-id="${id}" onclick="dashboard.showBusinessDetails('${id}')">
+                    <div class="business-card" data-id="${id}">
                         <div class="business-header">
-                            <h3>${name}</h3>
-                            <div class="business-tag">${businessType}</div>
+                            <h3 class="text-xl font-semibold text-gray-800">${name}</h3>
+                            <div class="business-tag bg-blue-50 text-blue-700">${businessType}</div>
                         </div>
-                        <div class="business-info">
-                            <div class="info-row">
-                                <span class="info-label">Address:</span>
-                                <span class="info-value">${address}</span>
-                            </div>
-                            ${b.latitude && b.longitude ? `
-                            <div class="info-row">
-                                <span class="info-label">Map:</span>
-                                <a href="https://www.google.com/maps/search/?api=1&query=${b.latitude},${b.longitude}" 
-                                   target="_blank" 
-                                   class="link">
-                                    View on Map
-                                </a>
-                            </div>` : ''}
-                            ${b.phone ? `
-                            <div class="info-row">
-                                <span class="info-label">Phone:</span>
-                                <span class="info-value">${b.phone}</span>
-                            </div>` : ''}
-                            ${b.website ? `
-                            <div class="info-row">
-                                <span class="info-label">Website:</span>
-                                <a href="${b.website}" target="_blank" class="info-value link">Visit Website</a>
-                            </div>` : ''}
-                            ${hours ? `
-                            <div class="info-row">
-                                <span class="info-label">Hours:</span>
-                                <div class="info-value">
-                                    ${hours}
+                        <div class="business-card-content">
+                            <div class="space-y-4">
+                                <div class="info-section">
+                                    <div class="info-label text-sm font-medium text-gray-500 mb-1">Address</div>
+                                    <div class="info-value text-gray-700">${address}</div>
                                 </div>
-                            </div>` : ''}
+
+                                ${b.latitude && b.longitude ? `
+                                <div class="info-section">
+                                    <div class="info-label text-sm font-medium text-gray-500 mb-1">Location</div>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=${b.latitude},${b.longitude}" 
+                                       target="_blank" 
+                                       class="inline-flex items-center text-blue-600 hover:text-blue-700">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        View on Map
+                                    </a>
+                                </div>` : ''}
+
+                                ${b.phone ? `
+                                <div class="info-section">
+                                    <div class="info-label text-sm font-medium text-gray-500 mb-1">Phone</div>
+                                    <a href="tel:${b.phone}" class="info-value text-gray-700 hover:text-blue-600">${b.phone}</a>
+                                </div>` : ''}
+
+                                ${b.website ? `
+                                <div class="info-section">
+                                    <div class="info-label text-sm font-medium text-gray-500 mb-1">Website</div>
+                                    <a href="${b.website}" target="_blank" class="info-value text-blue-600 hover:text-blue-700 break-all">${b.website}</a>
+                                </div>` : ''}
+
+                                ${hours ? `
+                                <div class="info-section">
+                                    <div class="info-label text-sm font-medium text-gray-500 mb-1">Opening Hours</div>
+                                    <div class="info-value text-gray-700 space-y-1">
+                                        ${hours.split('\n').map(hour => `
+                                            <div class="flex items-center">
+                                                <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                                ${hour}
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>` : ''}
+                            </div>
                         </div>
                     </div>
                 `;
