@@ -28,7 +28,7 @@ class Dashboard {
     async loadBusinesses() {
         try {
             this.log("Fetching businesses from server...");
-            const response = await fetch('http://localhost:8000/businesses');
+            const response = await fetch('http://localhost:8001/businesses');
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
