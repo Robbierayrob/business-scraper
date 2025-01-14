@@ -151,6 +151,15 @@ class Dashboard {
                         <span class="info-label">Address:</span>
                         <span class="info-value">${b.address || 'No Address'}</span>
                     </div>
+                    ${b.latitude && b.longitude ? `
+                    <div class="info-row">
+                        <span class="info-label">Map:</span>
+                        <a href="https://www.google.com/maps/search/?api=1&query=${b.latitude},${b.longitude}" 
+                           target="_blank" 
+                           class="link">
+                            View on Map
+                        </a>
+                    </div>` : ''}
                     ${b.phone ? `<div class="info-row">
                         <span class="info-label">Phone:</span>
                         <span class="info-value">${b.phone}</span>
@@ -199,13 +208,14 @@ class Dashboard {
                         <h3 class="section-title">Location</h3>
                         <div class="info-content">
                             <p>${business.address}</p>
+                            ${business.latitude && business.longitude ? `
                             <div class="map-link">
                                 <a href="https://www.google.com/maps/search/?api=1&query=${business.latitude},${business.longitude}" 
                                    target="_blank" 
                                    class="link">
                                     View on Google Maps
                                 </a>
-                            </div>
+                            </div>` : ''}
                         </div>
                     </div>
                     
