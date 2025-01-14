@@ -4,7 +4,7 @@ A powerful tool to extract and visualize business data from Google Maps. The pro
 - **Python Scraper**: Extracts business information using Google Maps API
 - **Web Dashboard**: Interactive interface to explore and analyze the collected data
 
-![Dashboard Screenshot](./screenshot_01.PNG)
+![Dashboard Screenshot](https://github.com/yourusername/business-scraper/raw/main/screenshot_01.PNG)
 
 ## 🚀 Features
 
