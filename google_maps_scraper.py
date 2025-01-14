@@ -443,7 +443,8 @@ def main():
         results = scraper.search_businesses(
             place_id=place_id,
             radius=radius,
-            business_types=['restaurant']
+            business_types=['restaurant'],
+            use_cache=False  # Force fresh search
         )
     except Exception as e:
         logger.error(f"Error searching restaurants: {str(e)}")
