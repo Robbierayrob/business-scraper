@@ -1,4 +1,4 @@
-# 🗺️ Business Scraper and Dashboard
+# 🗺️ Australian Business Scraper and Dashboard
 
 A powerful tool to extract and visualize business data from Google Maps. The project consists of:
 - **Python Scraper**: Extracts business information using Google Maps API
