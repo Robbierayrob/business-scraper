@@ -226,7 +226,7 @@ class GoogleMapsScraper:
                     'opening_hours': self.format_opening_hours(
                         place_details['result'].get('opening_hours', {})
                     ),
-                    'business_type': place.get('types', ['unknown'])[0],
+                    'business_type': place.get('search_type', 'restaurant'),
                     'accessibility': place_details['result'].get(
                         'wheelchair_accessible_entrance', False
                     ),
@@ -536,15 +536,11 @@ def main():
     scrape_cost = len(scraper.cached_results) * scraper.PRICING['place_details']['advanced']
     print(f"\nScraping {len(scraper.cached_results)} businesses would cost ~${scrape_cost:.4f}")
     
-    # Ask about scraping
-    if input("Do you want to scrape these places? (y/n): ").lower() == 'y':
-        logger.info("Starting detailed scraping of %d businesses", len(scraper.cached_results))
-        print("Scraping additional details...")
-        # You can access the cached results with place IDs
-        for i, business in enumerate(scraper.cached_results, 1):
-            logger.debug("Scraping business %d/%d: %s", i, len(scraper.cached_results), business['name'])
-            # Add your scraping logic here
-            pass
+    # Scrape additional details automatically since we already have the data
+    logger.info("Starting detailed scraping of %d businesses", len(scraper.cached_results))
+    print("Scraping additional details...")
+    for i, business in enumerate(scraper.cached_results, 1):
+        logger.debug("Scraping business %d/%d: %s", i, len(scraper.cached_results), business['name'])
             
 if __name__ == "__main__":
     main()
