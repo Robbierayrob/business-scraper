@@ -191,7 +191,7 @@ class GoogleMapsScraper:
         logger.info("Found %d businesses in total search", len(all_results))
         results = []
         for i, place in enumerate(all_results, 1):
-            logger.debug("Processing business %d/%d: %s", i, len(places_result['results']), place.get('name'))
+            logger.debug("Processing business %d/%d: %s", i, len(all_results), place.get('name'))
             logger.debug("Fetching details for place_id: %s", place['place_id'])
             try:
                 # Get place details
