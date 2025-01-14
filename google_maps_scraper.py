@@ -82,34 +82,69 @@ class GoogleMapsScraper:
         place = next((p for p in autocomplete if p['description'] == selected), None)
         return place['place_id']
         
-    def search_businesses(self, place_id, radius=2500, business_type=None):
-        """Search for businesses in a specific location"""
+    # Common business types from Google Places API
+    BUSINESS_TYPES = [
+        'accounting', 'airport', 'amusement_park', 'aquarium', 'art_gallery',
+        'atm', 'bakery', 'bank', 'bar', 'beauty_salon', 'bicycle_store',
+        'book_store', 'bowling_alley', 'bus_station', 'cafe', 'campground',
+        'car_dealer', 'car_rental', 'car_repair', 'car_wash', 'casino',
+        'cemetery', 'church', 'city_hall', 'clothing_store', 'convenience_store',
+        'courthouse', 'dentist', 'department_store', 'doctor', 'drugstore',
+        'electrician', 'electronics_store', 'embassy', 'fire_station',
+        'florist', 'funeral_home', 'furniture_store', 'gas_station', 'gym',
+        'hair_care', 'hardware_store', 'hindu_temple', 'home_goods_store',
+        'hospital', 'insurance_agency', 'jewelry_store', 'laundry', 'lawyer',
+        'library', 'light_rail_station', 'liquor_store', 'local_government_office',
+        'locksmith', 'lodging', 'meal_delivery', 'meal_takeaway', 'mosque',
+        'movie_rental', 'movie_theater', 'moving_company', 'museum', 'night_club',
+        'painter', 'park', 'parking', 'pet_store', 'pharmacy', 'physiotherapist',
+        'plumber', 'police', 'post_office', 'primary_school', 'real_estate_agency',
+        'restaurant', 'roofing_contractor', 'rv_park', 'school', 'secondary_school',
+        'shoe_store', 'shopping_mall', 'spa', 'stadium', 'storage', 'store',
+        'subway_station', 'supermarket', 'synagogue', 'taxi_stand', 'tourist_attraction',
+        'train_station', 'transit_station', 'travel_agency', 'university',
+        'veterinary_care', 'zoo'
+    ]
+
+    def search_businesses(self, place_id, radius=2500, business_types=None):
+        """Search for businesses in a specific location by type(s)"""
         logger.info("Searching businesses near place_id: %s", place_id)
+        if business_types is None:
+            business_types = self.BUSINESS_TYPES
         # Get the location coordinates from place_id
         place_details = self.gmaps.place(place_id, fields=['geometry'])
         location = place_details['result']['geometry']['location']
         logger.debug("Location coordinates: lat=%s, lng=%s", location['lat'], location['lng'])
         
         logger.info("Searching businesses within %d meters radius", radius)
-        # Track nearby search request
-        self.request_count['nearby_search'] += 1
         all_results = []
-        places_result = self.gmaps.places_nearby(
-            location=f"{location['lat']},{location['lng']}",
-            radius=radius,
-            type=business_type
-        )
-        all_results.extend(places_result['results'])
         
-        # Get additional pages if available
-        while 'next_page_token' in places_result:
-            time.sleep(2)  # Required delay for next_page_token
+        # Search each business type individually
+        for business_type in business_types:
+            logger.info("Searching for %s businesses...", business_type)
+            
+            # Track nearby search request
+            self.request_count['nearby_search'] += 1
             places_result = self.gmaps.places_nearby(
-                page_token=places_result['next_page_token']
+                location=f"{location['lat']},{location['lng']}",
+                radius=radius,
+                type=business_type
             )
-            all_results.extend(places_result['results'])
-            if len(all_results) >= 60:  # Max 60 results
-                break
+            type_results = places_result['results']
+            
+            # Get additional pages if available
+            while 'next_page_token' in places_result and len(type_results) < 60:
+                time.sleep(2)  # Required delay for next_page_token
+                places_result = self.gmaps.places_nearby(
+                    page_token=places_result['next_page_token']
+                )
+                type_results.extend(places_result['results'])
+            
+            logger.info("Found %d %s businesses", len(type_results), business_type)
+            all_results.extend(type_results)
+            
+            # Avoid hitting API rate limits
+            time.sleep(1)
         
         logger.info("Found %d businesses in initial search", len(places_result['results']))
         results = []
@@ -260,17 +295,31 @@ def main():
         logger.warning("No radius selected by user")
         return
         
-    # Search all business types
-    business_type = None
+    # Search all business types sequentially
     logger.info("Starting business search with radius: %d meters", radius)
-    print("\nSearching all business types...")
+    print("\nSearching all business types sequentially...")
     
-    # Perform search
-    results = scraper.search_businesses(
-        place_id=place_id,
-        radius=radius,
-        business_type=business_type
-    )
+    # Perform search in chunks to avoid timeout
+    results = pd.DataFrame()
+    chunk_size = 10
+    for i in range(0, len(scraper.BUSINESS_TYPES), chunk_size):
+        types_chunk = scraper.BUSINESS_TYPES[i:i + chunk_size]
+        print(f"\nSearching types: {', '.join(types_chunk)}")
+        
+        chunk_results = scraper.search_businesses(
+            place_id=place_id,
+            radius=radius,
+            business_types=types_chunk
+        )
+        
+        # Combine results while avoiding duplicates
+        if not results.empty:
+            existing_ids = set(results['place_id'])
+            chunk_results = chunk_results[~chunk_results['place_id'].isin(existing_ids)]
+        
+        results = pd.concat([results, chunk_results])
+        
+        print(f"Total businesses found so far: {len(results)}")
     
     # Save results to memory
     scraper.cached_results = results.to_dict('records')
