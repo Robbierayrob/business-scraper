@@ -293,7 +293,7 @@ class GoogleMapsScraper:
                 'opening_hours': self.format_opening_hours(
                     place_details['result'].get('opening_hours', {})
                 ),
-                'business_type': place.get('types', ['unknown'])[0],
+                'business_type': self.get_primary_business_type(place.get('types', [])),
                 'accessibility': place_details['result'].get(
                     'wheelchair_accessible_entrance', False
                 ),
@@ -305,6 +305,25 @@ class GoogleMapsScraper:
         except Exception as e:
             logger.error(f"Error processing business {place.get('name')}: {str(e)}")
             return None
+
+    def get_primary_business_type(self, types):
+        """Get the most relevant business type from the types list"""
+        if not types:
+            return 'unknown'
+            
+        # Prefer restaurant-related types first
+        restaurant_types = ['restaurant', 'food', 'cafe', 'meal_takeaway', 'meal_delivery']
+        for t in types:
+            if t in restaurant_types:
+                return t
+                
+        # Return the first non-generic type
+        generic_types = ['point_of_interest', 'establishment']
+        for t in types:
+            if t not in generic_types:
+                return t
+                
+        return types[0]  # fallback to first type if all are generic
 
     def format_opening_hours(self, opening_hours):
         """Format opening hours into readable string"""
