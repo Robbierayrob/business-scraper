@@ -143,13 +143,13 @@ class Dashboard {
             return `
             <div class="business-card" data-id="${b.id}" onclick="dashboard.showBusinessDetails('${b.id}')">
                 <div class="business-header">
-                    <h3>${b.name}</h3>
-                    <div class="business-tag">${b.business_type.replace(/_/g, ' ')}</div>
+                    <h3>${b.name || 'No Name'}</h3>
+                    <div class="business-tag">${(b.business_type || 'unknown').replace(/_/g, ' ')}</div>
                 </div>
                 <div class="business-info">
                     <div class="info-row">
                         <span class="info-label">Address:</span>
-                        <span class="info-value">${b.address}</span>
+                        <span class="info-value">${b.address || 'No Address'}</span>
                     </div>
                     ${b.phone ? `<div class="info-row">
                         <span class="info-label">Phone:</span>
@@ -179,8 +179,16 @@ class Dashboard {
     }
 
     showBusinessDetails(id) {
+        if (!id) {
+            this.log('No business ID provided', 'error');
+            return;
+        }
+        
         const business = this.businesses.find(b => b.id === id);
-        if (!business) return;
+        if (!business) {
+            this.log(`Business with ID ${id} not found`, 'error');
+            return;
+        }
         
         this.selectedBusiness = business;
         this.sidebar.innerHTML = `
@@ -238,4 +246,7 @@ class Dashboard {
 }
 
 // Initialize dashboard when page loads
-document.addEventListener('DOMContentLoaded', () => new Dashboard());
+let dashboard;
+document.addEventListener('DOMContentLoaded', () => {
+    dashboard = new Dashboard();
+});
