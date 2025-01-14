@@ -40,12 +40,7 @@ async def validate_address(address: str):
 @app.post("/search")
 async def search_businesses(place_id: str, radius: int = 2500, business_types: list = None):
     try:
-        # Validate address and get place_id
-        place_id = scraper.validate_address(address)
-        if not place_id:
-            raise HTTPException(status_code=400, detail="Invalid address")
-        
-        # Search businesses
+        # Search businesses using provided place_id
         results = scraper.search_businesses(place_id, radius, business_types)
         
         # Add metadata
