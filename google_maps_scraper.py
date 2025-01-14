@@ -48,22 +48,26 @@ class GoogleMapsScraper:
         
     def validate_address(self, address):
         """Use Google's autocomplete to validate and confirm address"""
-        autocomplete = self.gmaps.places_autocomplete(
-            input_text=address,
-            types='geocode'
-        )
-        
-        if not autocomplete:
-            logger.warning("No matching addresses found for: %s", address)
-            return None
+        try:
+            autocomplete = self.gmaps.places_autocomplete(
+                input_text=address,
+                types='geocode'
+            )
             
-        logger.info("Found %d address suggestions for: %s", len(autocomplete), address)
-        
-        # Return all suggestions - client will handle selection
-        return [{
-            'description': r['description'],
-            'place_id': r['place_id']
-        } for r in autocomplete]
+            if not autocomplete:
+                logger.warning("No matching addresses found for: %s", address)
+                return []
+                
+            logger.info("Found %d address suggestions for: %s", len(autocomplete), address)
+            
+            # Return all suggestions - client will handle selection
+            return [{
+                'description': r['description'],
+                'place_id': r['place_id']
+            } for r in autocomplete]
+        except Exception as e:
+            logger.error("Error validating address: %s", str(e))
+            return []
         
     # Common business types from Google Places API
     BUSINESS_TYPES = [
@@ -129,9 +133,9 @@ class GoogleMapsScraper:
             # Avoid hitting API rate limits
             time.sleep(1)
         
-        logger.info("Found %d businesses in initial search", len(places_result['results']))
+        logger.info("Found %d businesses in total search", len(all_results))
         results = []
-        for i, place in enumerate(places_result['results'], 1):
+        for i, place in enumerate(all_results, 1):
             logger.debug("Processing business %d/%d: %s", i, len(places_result['results']), place.get('name'))
             logger.debug("Fetching details for place_id: %s", place['place_id'])
             # Get place details
@@ -159,7 +163,7 @@ class GoogleMapsScraper:
                 'opening_hours': self.format_opening_hours(
                     place_details['result'].get('opening_hours', {})
                 ),
-                'business_type': business_type,
+                'business_type': place.get('types', ['unknown'])[0],
                 'accessibility': place_details['result'].get(
                     'wheelchair_accessible_entrance', False
                 )
