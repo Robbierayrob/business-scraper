@@ -131,3 +131,7 @@ Feel free to contribute to this project by submitting pull requests.
 ## License
 
 This project is licensed under the MIT License.
+
+## Screenshot
+
+![Dashboard Screenshot](screenshot_01.PNG)
