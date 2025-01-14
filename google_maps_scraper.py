@@ -166,7 +166,10 @@ class GoogleMapsScraper:
                 'business_type': place.get('types', ['unknown'])[0],
                 'accessibility': place_details['result'].get(
                     'wheelchair_accessible_entrance', False
-                )
+                ),
+                'place_id': place['place_id'],  # Add place_id to results
+                'latitude': place['geometry']['location']['lat'],
+                'longitude': place['geometry']['location']['lng']
             }
             results.append(business_data)
             
@@ -308,12 +311,15 @@ def main():
             logger.error(f"Error searching types {types_chunk}: {str(e)}")
             continue
         
-        # Combine results while avoiding duplicates
+        # Combine results while avoiding duplicates using name + address as unique key
         if not results.empty:
-            existing_ids = set(results['place_id'])
-            chunk_results = chunk_results[~chunk_results['place_id'].isin(existing_ids)]
-        
-        results = pd.concat([results, chunk_results])
+            existing_keys = set(zip(results['name'], results['address']))
+            chunk_results = chunk_results[
+                ~chunk_results.apply(lambda x: (x['name'], x['address']) in existing_keys, axis=1)
+            ]
+            
+        if not chunk_results.empty:
+            results = pd.concat([results, chunk_results])
         
         print(f"Total businesses found so far: {len(results)}")
     
