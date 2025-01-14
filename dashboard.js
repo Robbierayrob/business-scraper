@@ -27,31 +27,22 @@ class Dashboard {
 
     async loadBusinesses() {
         try {
-            this.log("Fetching businesses from server...");
-            const response = await fetch('http://localhost:8001/businesses');
+            this.log("Loading businesses from local JSON file...");
+            const response = await fetch('businesses.json');
             
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`Failed to load businesses.json: ${response.status}`);
             }
             
             const data = await response.json();
-            this.log(`Server response: ${JSON.stringify(data, null, 2)}`);
-            
-            if (data.status === 'error') {
-                this.log(`Error from server: ${data.message}`, 'error');
-                this.businesses = [];
-                return;
-            }
-
-            if (data.data && data.data.length > 0) {
-                this.log(`Received ${data.data.length} businesses from server`);
+            this.log(`Successfully loaded ${data.length} businesses`);
                 
                 // Debug: Log first business structure
                 if (data.data.length > 0) {
                     this.log(`First business data structure: ${JSON.stringify(data.data[0], null, 2)}`);
                 }
                 
-                this.businesses = data.data;
+                this.businesses = data;
                 
                 // Add unique IDs if missing
                 this.businesses = this.businesses.map((b, i) => {
@@ -63,9 +54,8 @@ class Dashboard {
                 
                 this.log(`Loaded ${this.businesses.length} businesses`);
                 this.log(`First business after processing: ${JSON.stringify(this.businesses[0], null, 2)}`);
-            } else {
-                this.log("No businesses found in the data file", 'warning');
-                this.businesses = [];
+            if (this.businesses.length === 0) {
+                this.log("No businesses found in businesses.json", 'warning');
             }
             
             // Debug: Check if businesses have required fields
